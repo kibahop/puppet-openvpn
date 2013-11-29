@@ -19,7 +19,6 @@ class openvpn::softwarerepo
             release           => "${::lsbdistcodename}",
             repos             => 'main',
             required_packages => undef,
-            key               => '1C4CBDCDCD2EFD2A',
             key_source        => 'https://swupdate.openvpn.net/repos/repo-public.gpg',
             pin               => '501',
             include_src       => false
