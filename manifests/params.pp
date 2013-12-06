@@ -14,7 +14,6 @@ class openvpn::params {
             $pidfile_prefix = ''
             $build_deps = [ 'lzo-devel', 'openssl-devel', 'pam-devel', 'pkcs11-helper-devel', 'gnutls-devel' ]
             $config_dir = '/etc/openvpn'
-            $admin_group = 'root'
             $nobody = 'nobody'
             $nogroup = 'nobody'
         }
@@ -26,7 +25,6 @@ class openvpn::params {
             $pidfile_prefix = 'openvpn.'
             $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev' ]
             $config_dir = '/etc/openvpn'
-            $admin_group = 'root'
             $nobody = 'nobody'
             $nogroup = 'nogroup'
         }
@@ -38,7 +36,6 @@ class openvpn::params {
             $pidfile_prefix = 'openvpn.'
             $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev' ]
             $config_dir = '/etc/openvpn'
-            $admin_group = 'root'
             $nobody = 'nobody'
             $nogroup = 'nogroup'
         }

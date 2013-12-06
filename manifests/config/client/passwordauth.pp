@@ -12,12 +12,14 @@ define openvpn::config::client::passwordauth
     $password,
 )
 {
+    include os::params
+
     file { "openvpn-${title}.conf":
         name  => "${::openvpn::params::config_dir}/${title}.conf",
         ensure => present,
         content => template('openvpn/client-passwordauth.conf.erb'),
         owner => root,
-        group => root,
+        group => "${::os::params::admingroup}",
         mode  => 644,
         notify => Class['openvpn::service'],
     }
@@ -34,7 +36,7 @@ define openvpn::config::client::passwordauth
             ensure => present,
             content => template('openvpn/client-passwordauth.pass.erb'),
             owner => root,
-            group => root,
+            group => "${::os::params::admingroup}",
             mode  => 600,
             require => Class['openvpn::install'],
             notify => Class['openvpn::service'],

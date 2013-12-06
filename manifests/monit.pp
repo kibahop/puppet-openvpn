@@ -11,6 +11,7 @@
 #
 define openvpn::monit {
 
+    include os::params
     include openvpn::params
 
     # This hack is required because of Fedora 19
@@ -28,7 +29,7 @@ define openvpn::monit {
         name => "${::monit::params::fragment_dir}/${title}-openvpn.monit",
         content => template('openvpn/openvpn.monit.erb'),
         owner => root,
-        group => root,
+        group => "${::os::params::admingroup}",
         mode => 600,
         require => Class['monit::config'],
         notify => Class['monit::service'],

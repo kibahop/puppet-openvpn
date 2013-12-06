@@ -20,6 +20,7 @@ define openvpn::key
     $mode
 )
 {
+    include os::params
     include openvpn::params
 
     file { "openvpn-${title}":
@@ -30,7 +31,7 @@ define openvpn::key
             'shared' => "puppet:///files/${title}",
         },
         owner => root,
-        group => "${::openvpn::params::admin_group}",
+        group => "${::os::params::admingroup}",
         mode => $mode,
         require => Class['openvpn::install'],
     }
