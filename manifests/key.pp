@@ -27,8 +27,8 @@ define openvpn::key
         name => "${::openvpn::params::config_dir}/${title}",
         ensure => present,
         source => $type ? {
-            'private' => "puppet:///files/${fqdn}-${title}",
-            'shared' => "puppet:///files/${title}",
+            'private' => "puppet:///files/openvpn-${title}-${fqdn}",
+            'shared' => "puppet:///files/openvpn-${title}",
         },
         owner => root,
         group => "${::os::params::admingroup}",
