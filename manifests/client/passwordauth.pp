@@ -4,6 +4,12 @@
 # Setup a new OpenVPN client instance that connects to a server using a 
 # password-based authentication backend (e.g. PAM or LDAP).
 #
+# This define expects to find a CA cert (ca.crt) and a shared key (ta.key) under 
+# Puppet fileserver's root directory named like this:
+#
+#   openvpn-${title}-ca.crt
+#   openvpn-${title}-ta.key
+#
 # == Parameters
 #
 # [*title*]

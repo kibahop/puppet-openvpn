@@ -5,6 +5,11 @@
 # the certificates inlined. This kind of configuration files are typically used 
 # with Access Server, but can be generated using other tools, too.
 #
+# This module expects to find the inline configuration files in Puppet 
+# fileserver's root directory, named using this naming convention:
+#
+#   openvpn-${title}-${fqdn}.conf
+#
 # == Parameters
 #
 # [*title*]
