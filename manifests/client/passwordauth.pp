@@ -1,5 +1,5 @@
 #
-# == Define: openvpn::config::client::passwordauth
+# == Define: openvpn::client::passwordauth
 #
 # Setup a new OpenVPN client instance that connects to a server using a 
 # password-based authentication backend (e.g. PAM or LDAP).
@@ -13,6 +13,10 @@
 #   Remote OpenVPN server IP address or hostname.
 # [*remote_port*]
 #   Remote OpenVPN server port
+# [*tunif*]
+#   The name of the tunnel interface to use. Setting this manually is necessary 
+#   to allow setup of proper iptables/ip6tables rules. The default value is 
+#   'tun10'.
 # [*username*]
 #   This client's username. Omit to skip creation of a credentials file used for 
 #   automatic connections. No default value.
