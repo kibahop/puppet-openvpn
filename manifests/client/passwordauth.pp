@@ -15,6 +15,10 @@
 # [*title*]
 #   While not strictly a parameter, $title is used as an identifier for the VPN 
 #   connection in filenames and such.
+# [*autostart*]
+#   If set to 'yes', enable the VPN connection on startup. Valid values 'yes' 
+#   and 'no'. Defaults to 'yes'. For implementation details see the
+#   openvpn::client::inline class.
 # [*remote_host*]
 #   Remote OpenVPN server IP address or hostname.
 # [*remote_port*]
@@ -31,6 +35,7 @@
 #
 define openvpn::client::passwordauth
 (
+    $autostart='yes',
     $remote_host,
     $remote_port,
     $tunif='tun10',
@@ -44,6 +49,7 @@ define openvpn::client::passwordauth
     openvpn::config::client::noninline { "${title}": }
 
     openvpn::config::client::passwordauth { "${title}":
+        autostart => $autostart,
         remote_host => $remote_host,
         remote_port => $remote_port,
         tunif => $tunif,

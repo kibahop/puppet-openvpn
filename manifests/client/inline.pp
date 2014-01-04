@@ -15,6 +15,15 @@
 # [*title*]
 #   While not strictly a parameter, $title is used as an identifier for the VPN 
 #   connection in filenames and such.
+# [*autostart*]
+#   If set to 'yes', enable the VPN connection on startup. Valid values 'yes' 
+#   and 'no'. Defaults to 'yes'. Note that this feature is implemented by 
+#   appending a ".disabled" to the config file suffix, because startup scripts 
+#   in some operating systems (e.g. CentOS 6) blindly launch all files with 
+#   .conf suffix in /etc/openvpn, while others have fine-grained controls over 
+#   which VPN connections to start. However, even on those platforms co-existing 
+#   with manually configured VPN connections would be fairly painful without 
+#   this hack.
 # [*tunif*]
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
@@ -22,6 +31,7 @@
 #
 define openvpn::client::inline
 (
+    $autostart='yes',
     $tunif='tun10'
 )
 {
@@ -29,6 +39,7 @@ define openvpn::client::inline
     include openvpn::params
 
     openvpn::config::client::inline { "${title}":
+        autostart => $autostart,
         tunif => $tunif,
     }
 
