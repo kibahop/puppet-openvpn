@@ -28,6 +28,7 @@ define openvpn::config::client::inline
         owner => root,
         group => "${::os::params::admingroup}",
         mode  => 644,
+        require => Class['openvpn::install'],
     }
 
     # Remove the inactive configuration file (if we switched from $autostart = 
