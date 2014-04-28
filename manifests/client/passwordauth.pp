@@ -44,7 +44,7 @@ define openvpn::client::passwordauth
     $tunif='tun10',
     $username='',
     $password='',
-    $clientname
+    $clientname = undef
 )
 {
     openvpn::client::inline { "${title}":
