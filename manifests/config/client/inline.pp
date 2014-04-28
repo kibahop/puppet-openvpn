@@ -7,7 +7,8 @@
 define openvpn::config::client::inline
 (
     $autostart,
-    $tunif
+    $tunif,
+    $clientname
 )
 {
     include os::params
@@ -20,11 +21,17 @@ define openvpn::config::client::inline
         $inactive_config = "${::openvpn::params::config_dir}/${title}.conf"
     }
 
+    if $clientname {
+        $certname = $clientname
+    } else {
+        $certname = $::fqdn
+    }
+
     # Add the active configuration file
     file { "openvpn-${title}.conf-active":
         name  => $active_config,
         ensure => present,
-        source => "puppet:///files/openvpn-${title}-${fqdn}.conf",
+        source => "puppet:///files/openvpn-${title}-${certname}.conf",
         owner => root,
         group => "${::os::params::admingroup}",
         mode  => 644,

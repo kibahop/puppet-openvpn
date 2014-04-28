@@ -28,11 +28,16 @@
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
 #   'tun10'.
+# [*clientname*]
+#   Use this parameter to override $fqdn when downloading the configuration 
+#   files. Very useful if you want to reuse the same client configuration on 
+#   several different nodes. No default value.
 #
 define openvpn::client::inline
 (
     $autostart='yes',
-    $tunif='tun10'
+    $tunif='tun10',
+    $clientname = undef
 )
 {
 
@@ -41,6 +46,7 @@ define openvpn::client::inline
     openvpn::config::client::inline { "${title}":
         autostart => $autostart,
         tunif => $tunif,
+        clientname => $clientname,
     }
 
     if tagged('monit') {
