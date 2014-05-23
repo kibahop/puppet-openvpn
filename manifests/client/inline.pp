@@ -23,7 +23,8 @@
 #   .conf suffix in /etc/openvpn, while others have fine-grained controls over 
 #   which VPN connections to start. However, even on those platforms co-existing 
 #   with manually configured VPN connections would be fairly painful without 
-#   this hack.
+#   this hack. This parameter also enables and disables monit monitoring as 
+#   necessary.
 # [*tunif*]
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
@@ -50,7 +51,9 @@ define openvpn::client::inline
     }
 
     if tagged('monit') {
-        openvpn::monit { "${title}": }
+        openvpn::monit { "${title}":
+            autostart => $autostart,
+        }
     }
 
     if tagged('packetfilter') {
