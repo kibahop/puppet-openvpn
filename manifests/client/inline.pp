@@ -32,7 +32,9 @@
 # [*clientname*]
 #   Use this parameter to override $fqdn when downloading the configuration 
 #   files. Very useful if you want to reuse the same client configuration on 
-#   several different nodes. No default value.
+#   several different nodes. For example, if you created a file called 
+#   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the 
+#   $clientname. No default value.
 #
 define openvpn::client::inline
 (
