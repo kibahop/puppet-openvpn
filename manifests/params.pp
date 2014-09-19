@@ -27,8 +27,17 @@ class openvpn::params {
         'Debian': {
             $package_name = 'openvpn'
             $service_name = 'openvpn'
-            $pid_dir = '/var/run'
-            $pidfile_prefix = 'openvpn.'
+
+            case $lsbdistcodename {
+                'trusty': {
+                    $pid_dir = '/var/run/openvpn'
+                    $pidfile_prefix = ''
+                }
+                default: {
+                    $pid_dir = '/var/run'
+                    $pidfile_prefix = 'openvpn.'
+                }
+            }
             $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev', 'libtool', 'autoconf', 'make' ]
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
@@ -37,16 +46,7 @@ class openvpn::params {
             $service_stop = "/usr/sbin/service $service_name stop"
         }
         default: {
-            $package_name = 'openvpn'
-            $service_name = 'openvpn'
-            $pid_dir = '/var/run'
-            $pidfile_prefix = 'openvpn.'
-            $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev', 'libtool', 'autoconf', 'make' ]
-            $config_dir = '/etc/openvpn'
-            $nobody = 'nobody'
-            $nogroup = 'nogroup'
-            $service_start = "/usr/sbin/service $service_name start"
-            $service_stop = "/usr/sbin/service $service_name stop"
+            fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
         }
     }
 }

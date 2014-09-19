@@ -34,7 +34,7 @@
 class openvpn
 (
     $use_latest_release = 'no'
-)
+) inherits openvpn::params
 {
     # We need to include openvpn::softwarerepo to be able to create proper 
     # dependencies in openvpn::install, whether we add any custom software 
