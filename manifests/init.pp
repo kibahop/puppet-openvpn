@@ -16,20 +16,21 @@
 #
 # == Examples
 #
-# class { 'openvpn':
-#   use_latest_release => 'yes',
-# }
+#   class { 'openvpn':
+#       use_latest_release => 'yes',
+#   }
 #
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
+#
 # Samuli Seppänen <samuli@openvpn.net>
+#
 # Mikko Vilpponen <vilpponen@protecomp.fi>
 #
 # == License
 #
-# BSD-lisence
-# See file LICENSE for details
+# BSD-license. See file LICENSE for details.
 #
 class openvpn
 (
