@@ -13,7 +13,7 @@ define openvpn::packetfilter::server
 
     firewall { "006 ipv4 accept udp on ${tunif} to port ${local_port}":
         provider => "iptables",
-        chain  => "INPUT"
+        chain  => "INPUT",
         proto => "udp",
         dport => $local_port,
         action => "accept",
