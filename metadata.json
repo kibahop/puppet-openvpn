@@ -1,0 +1,13 @@
+{
+  "name": "puppetfinland-openvpn",
+  "version": "0.5.0",
+  "author": "Puppet-Finland team",
+  "license": "BSD license",
+  "summary": "Setup openvpn"
+  "source": "https://github.com/Puppet-Finland/openvpn.git",
+  "project_page": "https://github.com/Puppet-Finland/openvpn",
+  "dependencies": [
+    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
+    { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
+  ]
+}
