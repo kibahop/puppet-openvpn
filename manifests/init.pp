@@ -40,7 +40,9 @@ class openvpn
 (
     $use_latest_release = 'no',
     $inline_clients = {},
-    $passwordauth_clients = {}
+    $passwordauth_clients = {},
+    $inline_servers = {},
+    $ldapauth_servers = {}
 
 ) inherits openvpn::params
 {
@@ -57,4 +59,6 @@ class openvpn
 
     create_resources('openvpn::client::inline', $inline_clients)
     create_resources('openvpn::client::passwordauth', $passwordauth_clients)
+    create_resources('openvpn::server::inline', $inline_servers)
+    create_resources('openvpn::server::ldapauth', $ldapauth_servers)
 }

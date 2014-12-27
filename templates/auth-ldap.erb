@@ -1,0 +1,31 @@
+<LDAP>
+    # LDAP server URL
+    URL <%= url %>
+
+    # Bind DN (If your LDAP server doesn't support anonymous binds)
+    BindDN <%= binddn %>
+
+    # Bind Password
+    Password <%= bindpw %>
+
+    # Network timeout (in seconds)
+    Timeout 15
+</LDAP>
+
+<Authorization>
+    # Base DN
+    BaseDN "<%= user_basedn %>"
+
+    # User Search Filter
+    SearchFilter "<%= user_search_filter %>"
+
+    # Require Group Membership
+    RequireGroup yes
+
+    <Group>
+        BaseDN "<%= group_basedn %>"
+        SearchFilter "<%= group_search_filter %>"
+        MemberAttribute <%= member_attribute %>
+    </Group>
+</Authorization>
+

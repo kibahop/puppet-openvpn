@@ -5,6 +5,8 @@
 #
 class openvpn::params {
 
+    include os::params
+
     case $::osfamily {
         'RedHat': {
             $package_name = 'openvpn'
@@ -26,6 +28,7 @@ class openvpn::params {
         }
         'Debian': {
             $package_name = 'openvpn'
+            $ldapplugin_package_name = 'openvpn-auth-ldap'
             $service_name = 'openvpn'
 
             case $lsbdistcodename {
