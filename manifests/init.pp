@@ -17,12 +17,42 @@
 #   A hash of openvpn::client::inline resources to realize.
 # [*passwordauth_clients*]
 #   A hash of openvpn::client::passwordauth resources to realize.
+# [*inline_servers*]
+#   A hash of openvpn::server::inline resources to realize.
+# [*ldapauth_servers*]
+#   A hash of openvpn::server::ldapauth resources to realize.
 #
 # == Examples
 #
-#   class { 'openvpn':
-#       use_latest_release => 'yes',
-#   }
+#   ---
+#   classes:
+#       - openvpn
+#
+#   openvpn::use_latest_release: 'yes'
+#
+#   openvpn::ldapauth_servers:
+#       server1:
+#           tunif: 'tun6'
+#
+#   openvpn::inline_clients:
+#       client1:
+#           autostart: 'no'
+#           tunif: 'tun10'
+#       client2:
+#           autostart: 'yes'
+#           tunif: 'tun11'
+#
+#   openvpn::passwordauth_clients:
+#       client3:
+#           autostart: 'no'
+#           tunif: 'tun12'
+#           username: 'johndoe'
+#           password: 'password'
+#       client4:
+#           autostart: 'no'
+#           tunif: 'tun13'
+#           username: 'claudius'
+#           password: 'maximus'
 #
 # == Authors
 #
