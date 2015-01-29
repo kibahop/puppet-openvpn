@@ -17,6 +17,7 @@ define openvpn::config::server::inline
         owner => root,
         group => "${::os::params::admingroup}",
         mode => 755,
+        require => Class['openvpn::install'],
     } 
 
     $config = "${::openvpn::params::config_dir}/${title}.conf"
