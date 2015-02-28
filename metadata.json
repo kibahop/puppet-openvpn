@@ -9,6 +9,6 @@
   "dependencies": [
     { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
     { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "duritong/sysctl", "version_requirement": ">= 0.0.6" },
+    { "name": "duritong/sysctl", "version_requirement": ">= 0.0.6" }
   ]
 }
