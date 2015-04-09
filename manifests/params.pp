@@ -17,14 +17,6 @@ class openvpn::params {
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nobody'
-
-            if $::operatingsystem == 'Fedora' {
-                $service_start = "/usr/bin/systemctl start ${service_name}.service"
-                $service_stop = "/usr/bin/systemctl stop ${service_name}.service"
-             } else {
-                $service_start = "/sbin/service $service_name start"
-                $service_stop = "/sbin/service $service_name stop"
-            }
         }
         'Debian': {
             $package_name = 'openvpn'
@@ -45,11 +37,19 @@ class openvpn::params {
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nogroup'
-            $service_start = "/usr/sbin/service $service_name start"
-            $service_stop = "/usr/sbin/service $service_name stop"
         }
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
         }
     }
+
+    if $::has_systemd == 'true' {
+        $service_start = "${::os::params::systemctl} start ${service_name}"
+        $service_stop = "${::os::params::systemctl} stop ${service_name}"
+    } else {
+        $service_start = "${::os::params::service_cmd} ${service_name} start"
+        $service_stop = "${::os::params::service_cmd} ${service_name} stop"
+    }
+
+
 }

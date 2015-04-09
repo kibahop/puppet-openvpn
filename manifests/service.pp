@@ -6,9 +6,7 @@
 # service handling is handled on a per-connection basis, and thus needs to be 
 # configured using a define, not in this class.
 #
-class openvpn::service {
-
-    include openvpn::params
+class openvpn::service inherits openvpn::params {
 
     if $operatingsystem == 'Fedora' {
 

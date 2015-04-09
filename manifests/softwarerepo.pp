@@ -9,7 +9,8 @@
 class openvpn::softwarerepo
 (
     $use_latest_release
-)
+
+) inherits openvpn::params
 {
 
     if ($::osfamily == 'Debian') and ($use_latest_release == 'yes') {
