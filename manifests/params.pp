@@ -5,14 +5,14 @@
 #
 class openvpn::params {
 
-    include os::params
+    include ::os::params
 
     case $::osfamily {
         'RedHat': {
             $package_name = 'openvpn'
             $service_name = 'openvpn'
             $pid_dir = '/var/run/openvpn'
-            $pidfile_prefix = ''
+            $pidfile_prefix = undef
             $build_deps = [ 'lzo-devel', 'openssl-devel', 'pam-devel', 'pkcs11-helper-devel', 'gnutls-devel', 'autoconf', 'libtool', 'make' ]
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
@@ -23,10 +23,10 @@ class openvpn::params {
             $ldapplugin_package_name = 'openvpn-auth-ldap'
             $service_name = 'openvpn'
 
-            case $lsbdistcodename {
+            case $::lsbdistcodename {
                 'trusty': {
                     $pid_dir = '/var/run/openvpn'
-                    $pidfile_prefix = ''
+                    $pidfile_prefix = undef
                 }
                 default: {
                     $pid_dir = '/var/run'
@@ -43,7 +43,7 @@ class openvpn::params {
         }
     }
 
-    if $::has_systemd == 'true' {
+    if str2bool($::has_systemd) {
         $service_start = "${::os::params::systemctl} start ${service_name}"
         $service_stop = "${::os::params::systemctl} stop ${service_name}"
     } else {

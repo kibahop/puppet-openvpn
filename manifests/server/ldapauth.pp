@@ -67,21 +67,21 @@ define openvpn::server::ldapauth
 )
 {
 
-    include openvpn::install::ldapplugin
+    include ::openvpn::install::ldapplugin
 
-    openvpn::config::server::ldapplugin { "$title":
-        url => $url,
-        binddn => $binddn,
-        bindpw => $bindpw,
-        user_basedn => $user_basedn,
-        user_search_filter => $user_search_filter,
-        group_basedn => $group_basedn,
+    openvpn::config::server::ldapplugin { $title:
+        url                 => $url,
+        binddn              => $binddn,
+        bindpw              => $bindpw,
+        user_basedn         => $user_basedn,
+        user_search_filter  => $user_search_filter,
+        group_basedn        => $group_basedn,
         group_search_filter => $group_search_filter,
-        member_attribute => $member_attribute,
+        member_attribute    => $member_attribute,
     }
 
-    openvpn::server::inline { "$title":
-        tunif => $tunif,
+    openvpn::server::inline { $title:
+        tunif      => $tunif,
         local_port => $local_port,
     }
 

@@ -17,7 +17,7 @@ class openvpn::softwarerepo
 
         apt::source { 'openvpn-aptrepo':
             location          => 'http://swupdate.openvpn.net/apt',
-            release           => "${::lsbdistcodename}",
+            release           => $::lsbdistcodename,
             repos             => 'main',
             required_packages => undef,
             key               => 'E158C569',

@@ -44,18 +44,18 @@ define openvpn::client::passwordauth
 (
     $autostart='yes',
     $tunif='tun10',
-    $username='',
-    $password='',
+    $username=undef,
+    $password=undef,
     $clientname = undef
 )
 {
-    openvpn::client::inline { "${title}":
-        autostart => $autostart,
-        tunif => $tunif,
+    openvpn::client::inline { $title:
+        autostart  => $autostart,
+        tunif      => $tunif,
         clientname => $clientname,
     }
 
-    openvpn::config::client::passwordauth { "${title}":
+    openvpn::config::client::passwordauth { $title:
         username => $username,
         password => $password,
     }

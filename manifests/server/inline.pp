@@ -27,25 +27,25 @@ define openvpn::server::inline
 )
 {
 
-    include openvpn::params
-    include openvpn::config::server::common
+    include ::openvpn::params
+    include ::openvpn::config::server::common
 
-    openvpn::config::server::inline { "${title}":
+    openvpn::config::server::inline { $title:
         tunif => $tunif,
     }
 
     if tagged('monit') {
-        openvpn::monit { "${title}":
+        openvpn::monit { $title:
             autostart => 'yes',
         }
     }
 
     if tagged('packetfilter') {
-        openvpn::packetfilter::common { "${title}":
-            tunif => "${tunif}",
+        openvpn::packetfilter::common { $title:
+            tunif => $tunif,
         }
-        openvpn::packetfilter::server { "${title}":
-            tunif => "${tunif}",
+        openvpn::packetfilter::server { $title:
+            tunif      => $tunif,
             local_port => $local_port,
         }
     }

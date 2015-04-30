@@ -8,16 +8,9 @@
 #
 class openvpn::service inherits openvpn::params {
 
-    if $operatingsystem == 'Fedora' {
-
-        # We must handle each VPN connection separately.
-
-    } else {
-
-        service { 'openvpn':
-            name => "${::openvpn::params::service_name}",
-            enable => true,
-            require => Class['openvpn::install'],
-        }
+    service { 'openvpn':
+        name    => $::openvpn::params::service_name,
+        enable  => true,
+        require => Class['openvpn::install'],
     }
 }

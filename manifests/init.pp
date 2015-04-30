@@ -50,12 +50,12 @@ class openvpn
     # dependencies in openvpn::install, whether we add any custom software 
     # repositories or not.
     #
-    class { 'openvpn::softwarerepo':
+    class { '::openvpn::softwarerepo':
         use_latest_release => $use_latest_release,
     }
 
-    include openvpn::install
-    include openvpn::service
+    include ::openvpn::install
+    include ::openvpn::service
 
     create_resources('openvpn::client::inline', $inline_clients)
     create_resources('openvpn::client::passwordauth', $passwordauth_clients)

@@ -11,13 +11,13 @@ define openvpn::config::client::inline
     $clientname
 )
 {
-    include os::params
+    include ::openvpn::params
 
     if $autostart == 'yes' {
         $active_config = "${::openvpn::params::config_dir}/${title}.conf"
-        $inactive_config = "${::openvpn::params::config_dir}/${title}.conf.disabled" 
+        $inactive_config = "${::openvpn::params::config_dir}/${title}.conf.disabled"
     } else {
-        $active_config = "${::openvpn::params::config_dir}/${title}.conf.disabled" 
+        $active_config = "${::openvpn::params::config_dir}/${title}.conf.disabled"
         $inactive_config = "${::openvpn::params::config_dir}/${title}.conf"
     }
 
@@ -29,22 +29,22 @@ define openvpn::config::client::inline
 
     # Add the active configuration file
     file { "openvpn-${title}.conf-active":
-        name  => $active_config,
-        ensure => present,
-        source => "puppet:///files/openvpn-${title}-${certname}.conf",
-        owner => root,
-        group => "${::os::params::admingroup}",
-        mode  => 644,
+        ensure  => present,
+        name    => $active_config,
+        source  => "puppet:///files/openvpn-${title}-${certname}.conf",
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0644',
         require => Class['openvpn::install'],
     }
 
     # Remove the inactive configuration file (if we switched from $autostart = 
     # 'yes' to 'no', or vice versa.
     file { "openvpn-${title}.conf-inactive":
-        name  => $inactive_config,
-        ensure => absent,
+        ensure  => absent,
+        name    => $inactive_config,
         require => File["openvpn-${title}.conf-active"],
-        notify => Class['openvpn::service'],
+        notify  => Class['openvpn::service'],
     }
 
 }

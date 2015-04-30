@@ -7,6 +7,6 @@ class openvpn::install::ldapplugin inherits openvpn::params {
 
     package { 'openvpn-ldapplugin':
         ensure => present,
-        name => "${::openvpn::params::ldapplugin_package_name}",
+        name   => $::openvpn::params::ldapplugin_package_name,
     }
 }

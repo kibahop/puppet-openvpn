@@ -16,16 +16,16 @@ define openvpn::config::server::ldapplugin
     $member_attribute
 )
 {
-    include openvpn::params
+    include ::openvpn::params
 
     file { "openvpn-${title}-auth-ldap":
-        ensure => present,
-        name => "${::openvpn::params::config_dir}/${title}-auth-ldap",
+        ensure  => present,
+        name    => "${::openvpn::params::config_dir}/${title}-auth-ldap",
         content => template('openvpn/auth-ldap.erb'),
-        owner => root,
-        group => "${::os::params::admingroup}",
-        mode => 644,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0644',
         require => Class['openvpn::install'],
-    }        
+    }
 
 }

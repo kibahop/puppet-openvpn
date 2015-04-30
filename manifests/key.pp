@@ -16,23 +16,24 @@
 #
 define openvpn::key
 (
-    $type = 'private',
-    $mode
+    $mode,
+    $type = 'private'
 )
 {
-    include os::params
-    include openvpn::params
+    include ::openvpn::params
+
+    $source_file = $type ? {
+        'private' => "puppet:///files/openvpn-${title}-${::fqdn}",
+        'shared'  => "puppet:///files/openvpn-${title}",
+    }
 
     file { "openvpn-${title}":
-        name => "${::openvpn::params::config_dir}/${title}",
-        ensure => present,
-        source => $type ? {
-            'private' => "puppet:///files/openvpn-${title}-${fqdn}",
-            'shared' => "puppet:///files/openvpn-${title}",
-        },
-        owner => root,
-        group => "${::os::params::admingroup}",
-        mode => $mode,
+        ensure  => present,
+        name    => "${::openvpn::params::config_dir}/${title}",
+        source  => $source_file,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => $mode,
         require => Class['openvpn::install'],
     }
 }

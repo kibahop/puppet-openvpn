@@ -44,23 +44,23 @@ define openvpn::client::inline
 )
 {
 
-    include openvpn::params
+    include ::openvpn::params
 
-    openvpn::config::client::inline { "${title}":
-        autostart => $autostart,
-        tunif => $tunif,
+    openvpn::config::client::inline { $title:
+        autostart  => $autostart,
+        tunif      => $tunif,
         clientname => $clientname,
     }
 
     if tagged('monit') {
-        openvpn::monit { "${title}":
+        openvpn::monit { $title:
             autostart => $autostart,
         }
     }
 
     if tagged('packetfilter') {
         openvpn::packetfilter::common { "openvpn-${title}":
-            tunif => "${tunif}",
+            tunif => $tunif,
         }
     }
 }

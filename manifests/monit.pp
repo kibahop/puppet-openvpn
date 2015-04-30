@@ -14,24 +14,28 @@ define openvpn::monit
     $autostart
 )
 {
-
-    include os::params
-    include openvpn::params
+    include ::openvpn::params
 
     if $autostart == 'yes' {
-        $status = present
+        $ensure = present
     } elsif $autostart == 'no' {
-        $status = absent
+        $ensure = absent
+    }
+
+    if $::openvpn::params::pidfile_prefix {
+        $pidfile = "${::openvpn::params::pid_dir}/${::openvpn::params::pidfile_prefix}${title}.pid"
+    } else {
+        $pidfile = "${::openvpn::params::pid_dir}/${title}.pid"
     }
 
     file { "openvpn-${title}-openvpn.monit":
-        name => "${::monit::params::fragment_dir}/openvpn-${title}.monit",
-        ensure => $status,
+        ensure  => $ensure,
+        name    => "${::monit::params::fragment_dir}/openvpn-${title}.monit",
         content => template('openvpn/openvpn.monit.erb'),
-        owner => root,
-        group => "${::os::params::admingroup}",
-        mode => 600,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0600',
         require => Class['monit::config'],
-        notify => Class['monit::service'],
+        notify  => Class['monit::service'],
     }
 }
