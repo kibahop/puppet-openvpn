@@ -52,6 +52,18 @@
 #   user belongs to the group that's allowed VPN access. For example 'member'. 
 #   Defaults to top-scope variable $::ldap_member_attribute.
 #
+# == Examples
+#
+# Hiera example:
+#
+#  ---
+#  classes:
+#      - openvpn
+#  
+#  openvpn::ldapauth_servers:
+#      acme:
+#          tunif: 'tun6'
+#
 define openvpn::server::ldapauth
 (
     $tunif='tun5',

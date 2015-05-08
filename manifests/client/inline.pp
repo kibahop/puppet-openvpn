@@ -36,6 +36,25 @@
 #   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the 
 #   $clientname. No default value.
 #
+# == Examples
+#
+# Hiera example:
+#
+#   ---
+#  classes:
+#      - openvpn
+#
+#  openvpn::inline_clients:
+#      home:
+#          autostart: 'no'
+#          tunif: 'tun12'
+#      company1:
+#          autostart: 'no'
+#          tunif: 'tun13'
+#          # Reuse some other client's certificate; this requires duplicate-cn 
+#          # on the OpenVPN server.
+#          clientname: 'laptop.domain.com'
+#  
 define openvpn::client::inline
 (
     $autostart='yes',

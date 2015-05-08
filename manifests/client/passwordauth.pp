@@ -40,6 +40,21 @@
 #   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the
 #   $clientname.
 #
+# == Examples
+#
+# Hiera example:
+#
+#   ---
+#   classes:
+#       - openvpn
+#
+#   openvpn::passwordauth_clients:
+#       company2:
+#           autostart: 'no'
+#           tunif: 'tun14'
+#           username: 'john'
+#           password: 'mypassword'
+#
 define openvpn::client::passwordauth
 (
     $autostart='yes',

@@ -20,6 +20,18 @@
 #   to allow setup of proper iptables/ip6tables rules. The default value is
 #   'tun5'.
 #
+# == Examples
+#
+# Hiera example:
+#
+#  ---
+#  classes:
+#      - openvpn
+#
+#  openvpn::inline_servers:
+#      tunif: 'tun7'
+#      local_port: 1195
+#
 define openvpn::server::inline
 (
     $tunif='tun5',
