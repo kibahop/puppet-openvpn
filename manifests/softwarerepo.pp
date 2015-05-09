@@ -15,15 +15,22 @@ class openvpn::softwarerepo
 
     if ($::osfamily == 'Debian') and ($use_latest_release == 'yes') {
 
+        $ensure_source = $use_latest_release ? {
+            'yes' => present,
+            'no'  => absent,
+            default => absent,
+        }
+
         apt::source { 'openvpn-aptrepo':
-            location          => 'http://swupdate.openvpn.net/apt',
-            release           => $::lsbdistcodename,
-            repos             => 'main',
-            required_packages => undef,
-            key               => 'E158C569',
-            key_source        => 'https://swupdate.openvpn.net/repos/repo-public.gpg',
-            pin               => '501',
-            include_src       => false
+            ensure   => $ensure_source,
+            location => 'http://swupdate.openvpn.net/apt',
+            release  => $::lsbdistcodename,
+            repos    => 'main',
+            pin      => '501',
+            key      => {
+                'id'     => '30EBF4E73CCE63EEE124DD278E6DA8B4E158C569',
+                'source' => 'https://swupdate.openvpn.net/repos/repo-public.gpg',
+            }
         }
     }
 }

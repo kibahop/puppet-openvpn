@@ -20,8 +20,9 @@ See [metadata.json](metadata.json).
 This module has been tested on
 
 * Debian 7
-* Ubuntu 12.04 32-bit
-* Ubuntu 14.04 64-bit
+* Debian 8
+* Ubuntu 12.04
+* Ubuntu 14.04
 
 The following operating systems should work out of the box or with small
 modifications:
