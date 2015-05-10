@@ -13,6 +13,8 @@
 #   Defaults to 'no', which means that the operating system's default packages 
 #   are used. This currently only works for Debian-based operating systems: 
 #   setting it to 'yes' on any other operating systems has no effect.
+# [*service_enable*]
+#   Enable OpenVPN service on boot. Valid values are true (default) and false.
 # [*inline_clients*]
 #   A hash of openvpn::client::inline resources to realize.
 # [*passwordauth_clients*]
@@ -69,6 +71,7 @@
 class openvpn
 (
     $use_latest_release = 'no',
+    $enable_service = true,
     $inline_clients = {},
     $passwordauth_clients = {},
     $inline_servers = {},
@@ -85,7 +88,10 @@ class openvpn
     }
 
     include ::openvpn::install
-    include ::openvpn::service
+
+    class { '::openvpn::service':
+        enable => $enable_service,
+    }
 
     create_resources('openvpn::client::inline', $inline_clients)
     create_resources('openvpn::client::passwordauth', $passwordauth_clients)
