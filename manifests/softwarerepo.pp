@@ -15,6 +15,8 @@ class openvpn::softwarerepo
 
     if ($::osfamily == 'Debian') and ($use_latest_release == 'yes') {
 
+        include ::apt
+
         $ensure_source = $use_latest_release ? {
             'yes' => present,
             'no'  => absent,
