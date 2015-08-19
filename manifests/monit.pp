@@ -28,6 +28,17 @@ define openvpn::monit
         $pidfile = "${::openvpn::params::pid_dir}/${title}.pid"
     }
 
+    # On systemd-enabled distros we can manage individual VPN connections 
+    # separately, without having to restart all connectionss if one of them goes 
+    # down.
+    if str2bool($::has_systemd) {
+        $service_start = "${::openvpn::params::service_start}@${title}"
+        $service_stop = "${::openvpn::params::service_stop}@${title}"
+    } else {
+        $service_start = "${::openvpn::params::service_start}"
+        $service_stop = "${::openvpn::params::service_stop}"
+    }
+
     file { "openvpn-${title}-openvpn.monit":
         ensure  => $ensure,
         name    => "${::monit::params::fragment_dir}/openvpn-${title}.monit",

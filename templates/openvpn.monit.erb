@@ -1,3 +1,3 @@
 check process openvpn-<%= title %> with pidfile <%= pidfile %>
-    start "<%= scope['openvpn::params::service_start'] %>"
-    stop "<%= scope['openvpn::params::service_stop'] %>"
+    start "<%= service_start %>"
+    stop "<%= service_stop %>"
