@@ -20,10 +20,16 @@
 # [*title*]
 #   While not strictly a parameter, $title is used as an identifier for the VPN 
 #   connection in filenames and such.
-# [*autostart*]
-#   If set to 'yes', enable the VPN connection on startup. Valid values 'yes' 
-#   and 'no'. Defaults to 'yes'. For implementation details see the
-#   openvpn::client::inline class.
+# [*enable_service*]
+#   If set to true, enable the VPN connection on startup. Valid values are true
+#   and false. Defaults to true. Note that on non-systemd distros this feature
+#   is implemented by appending a ".disabled" to the config file suffix, because
+#   startup scripts in some operating systems (e.g. CentOS 6) blindly launch all
+#   files with .conf suffix in /etc/openvpn, while others have fine-grained
+#   controls over which VPN connections to start. However, even on those
+#   platforms co-existing with manually configured VPN connections would be
+#   fairly painful without this hack. This parameter also enables and disables
+#   monit monitoring as necessary.
 # [*tunif*]
 #   The name of the tunnel interface to use. Setting this manually is necessary 
 #   to allow setup of proper iptables/ip6tables rules. The default value is 
@@ -50,14 +56,14 @@
 #
 #   openvpn::passwordauth_clients:
 #       company2:
-#           autostart: 'no'
+#           enable_service: false
 #           tunif: 'tun14'
 #           username: 'john'
 #           password: 'mypassword'
 #
 define openvpn::client::passwordauth
 (
-    $autostart='yes',
+    $enable_service=true,
     $tunif='tun10',
     $username=undef,
     $password=undef,
@@ -65,9 +71,9 @@ define openvpn::client::passwordauth
 )
 {
     openvpn::client::inline { $title:
-        autostart  => $autostart,
-        tunif      => $tunif,
-        clientname => $clientname,
+        enable_service => $enable_service,
+        tunif          => $tunif,
+        clientname     => $clientname,
     }
 
     openvpn::config::client::passwordauth { $title:

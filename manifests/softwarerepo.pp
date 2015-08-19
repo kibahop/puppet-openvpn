@@ -13,13 +13,13 @@ class openvpn::softwarerepo
 ) inherits openvpn::params
 {
 
-    if ($::osfamily == 'Debian') and ($use_latest_release == 'yes') {
+    if ($::osfamily == 'Debian') and ($use_latest_release) {
 
         include ::apt
 
         $ensure_source = $use_latest_release ? {
-            'yes' => present,
-            'no'  => absent,
+            true => present,
+            false  => absent,
             default => absent,
         }
 

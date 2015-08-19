@@ -9,12 +9,14 @@
 # == Parameters
 #
 # [*use_latest_release*]
-#   Use latest release from the OpenVPN project. Valid values 'yes' and 'no'. 
-#   Defaults to 'no', which means that the operating system's default packages 
-#   are used. This currently only works for Debian-based operating systems: 
-#   setting it to 'yes' on any other operating systems has no effect.
-# [*service_enable*]
-#   Enable OpenVPN service on boot. Valid values are true (default) and false.
+#   Use latest release from the OpenVPN project. Valid values are true and 
+#   false. Defaults to false, which means that the operating system's default 
+#   packages are used. This currently only works for Debian-based operating 
+#   systems: setting it to true on any other operating systems has no effect.
+# [*enable_service*]
+#   Enable OpenVPN service on boot. Valid values are true (default) and false. 
+#   This only affects non-systemd distros which may or may not have built-in 
+#   fine-grained control over which VPN connections to start.
 # [*inline_clients*]
 #   A hash of openvpn::client::inline resources to realize.
 # [*passwordauth_clients*]
@@ -30,7 +32,7 @@
 #   classes:
 #       - openvpn
 #
-#   openvpn::use_latest_release: 'yes'
+#   openvpn::use_latest_release: true
 #
 #   openvpn::ldapauth_servers:
 #       server1:
@@ -38,20 +40,20 @@
 #
 #   openvpn::inline_clients:
 #       client1:
-#           autostart: 'no'
+#           enable_service: false
 #           tunif: 'tun10'
 #       client2:
-#           autostart: 'yes'
+#           enable_service: true
 #           tunif: 'tun11'
 #
 #   openvpn::passwordauth_clients:
 #       client3:
-#           autostart: 'no'
+#           enable_service: false
 #           tunif: 'tun12'
 #           username: 'johndoe'
 #           password: 'password'
 #       client4:
-#           autostart: 'no'
+#           enable_service: false
 #           tunif: 'tun13'
 #           username: 'claudius'
 #           password: 'maximus'
@@ -70,7 +72,7 @@
 #
 class openvpn
 (
-    $use_latest_release = 'no',
+    $use_latest_release = false,
     $enable_service = true,
     $inline_clients = {},
     $passwordauth_clients = {},

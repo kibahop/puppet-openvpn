@@ -11,14 +11,14 @@
 #
 define openvpn::monit
 (
-    $autostart
+    $enable_service
 )
 {
     include ::openvpn::params
 
-    if $autostart == 'yes' {
+    if $enable_service {
         $ensure = present
-    } elsif $autostart == 'no' {
+    } else {
         $ensure = absent
     }
 
