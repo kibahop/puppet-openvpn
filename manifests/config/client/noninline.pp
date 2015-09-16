@@ -7,12 +7,12 @@
 define openvpn::config::client::noninline {
 
     openvpn::key { "${title}-ta.key":
-        mode => 600,
+        mode => '0600',
         type => 'shared',
     }
 
     openvpn::key { "${title}-ca.crt":
-        mode => 644,
+        mode => '0644',
         type => 'shared',
     }
 

@@ -12,7 +12,7 @@
 #   Type of the key. Either 'shared' or 'private'. Only affects the name of the 
 #   file on the Puppet file server. Defaults to 'private'.
 # [*mode*]
-#   Permissions of the key in octal form, for example 600. No default value.
+#   Permissions of the key in octal form, for example '0600'. No default value.
 #
 define openvpn::key
 (
