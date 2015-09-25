@@ -48,7 +48,7 @@ define openvpn::server::inline
 
     if tagged('monit') {
         openvpn::monit { $title:
-            autostart => 'yes',
+            enable_service => true,
         }
     }
 
