@@ -10,7 +10,6 @@ class openvpn::service
 
 ) inherits openvpn::params {
 
-
     # Distros which have systemd treat each VPN connection as a separate 
     # service, so the "main" OpenVPN service should be disabled. This prevents
     # startup script from starting all OpenVPN connections on boot, as happens

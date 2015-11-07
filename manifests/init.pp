@@ -91,6 +91,11 @@ class openvpn
 
     include ::openvpn::install
 
+    # Debian 8.x requires some tweaks.
+    if $::lsbdistcodename == 'jessie' {
+        include ::openvpn::config::jessie
+    }
+
     class { '::openvpn::service':
         enable => $enable_service,
     }
