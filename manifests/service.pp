@@ -1,10 +1,8 @@
 #
 # == Class: openvpn::service 
 #
-# Ensure that the OpenVPN system service (which should launch all OpenVPN 
-# instances) is enabled. Note that on recent Fedoras (at least Fedora 19) 
-# service handling is handled on a per-connection basis, and thus needs to be 
-# configured using a define, not in this class.
+# Ensure that the OpenVPN system service is enabled, if requested, expect on 
+# systemd distros.
 #
 class openvpn::service
 (
@@ -12,9 +10,21 @@ class openvpn::service
 
 ) inherits openvpn::params {
 
+
+    # Distros which have systemd treat each VPN connection as a separate 
+    # service, so the "main" OpenVPN service should be disabled. This prevents
+    # startup script from starting all OpenVPN connections on boot, as happens
+    # by default on Debian 8.x unless /etc/default/openvpn is modified.
+    #
+    if str2bool($::has_systemd) {
+        $service_enable = false
+    } else {
+        $service_enable = $enable
+    }
+
     service { 'openvpn':
         name    => $::openvpn::params::service_name,
-        enable  => $enable,
+        enable  => $service_enable,
         require => Class['openvpn::install'],
     }
 }
