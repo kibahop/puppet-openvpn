@@ -23,11 +23,12 @@ This module has been tested on
 * Debian 8
 * Ubuntu 12.04
 * Ubuntu 14.04
+* Fedora 21
+* CentOS 7
 
 The following operating systems should work out of the box or with small
 modifications:
 
-* RedHat/CentOS
 * FreeBSD
 
 For details see [params.pp](manifests/params.pp).
