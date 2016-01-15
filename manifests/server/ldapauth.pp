@@ -78,6 +78,18 @@ define openvpn::server::ldapauth
     $member_attribute = $::ldap_member_attribute
 )
 {
+    # Parameter validation
+    $string_params = [ $tunif, $url, $binddn, $bindpw, $user_basedn, $user_search_filter, $group_basedn, $group_search_filter, $member_attribute ]
+    $string_params.each |$param| {
+        # validate_string does not fail on undef
+        if $param == undef {
+            fail("ERROR: Parameter undefined!")
+        } else {
+            validate_string($param)
+        }
+    }
+
+    validate_integer($local_port)
 
     include ::openvpn::install::ldapplugin
 
