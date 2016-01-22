@@ -38,6 +38,9 @@ class openvpn::params {
             $nobody = 'nobody'
             $nogroup = 'nogroup'
         }
+        'windows': {
+            $package_name = 'openvpn'
+        }
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
         }
@@ -50,6 +53,4 @@ class openvpn::params {
         $service_start = "${::os::params::service_cmd} ${service_name} start"
         $service_stop = "${::os::params::service_cmd} ${service_name} stop"
     }
-
-
 }

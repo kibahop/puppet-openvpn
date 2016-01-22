@@ -81,6 +81,10 @@ class openvpn
 
 ) inherits openvpn::params
 {
+
+    # Parts that work on all supported platforms
+    include ::openvpn::install
+
     # We need to include openvpn::softwarerepo to be able to create proper 
     # dependencies in openvpn::install, whether we add any custom software 
     # repositories or not.
@@ -91,17 +95,21 @@ class openvpn
 
     include ::openvpn::install
 
-    # Debian 8.x requires some tweaks.
-    if $::lsbdistcodename == 'jessie' {
-        include ::openvpn::config::jessie
-    }
+    # We only have limited support for Windows
+    unless $::kernel == 'Windows' {
 
-    class { '::openvpn::service':
-        enable => $enable_service,
-    }
+        # Debian 8.x requires some tweaks.
+        if $::lsbdistcodename == 'jessie' {
+            include ::openvpn::config::jessie
+        }
 
-    create_resources('openvpn::client::inline', $inline_clients)
-    create_resources('openvpn::client::passwordauth', $passwordauth_clients)
-    create_resources('openvpn::server::inline', $inline_servers)
-    create_resources('openvpn::server::ldapauth', $ldapauth_servers)
+        class { '::openvpn::service':
+            enable => $enable_service,
+        }
+
+        create_resources('openvpn::client::inline', $inline_clients)
+        create_resources('openvpn::client::passwordauth', $passwordauth_clients)
+        create_resources('openvpn::server::inline', $inline_servers)
+        create_resources('openvpn::server::ldapauth', $ldapauth_servers)
+    }
 }
