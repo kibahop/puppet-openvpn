@@ -96,7 +96,7 @@ class openvpn
     include ::openvpn::install
 
     # We only have limited support for Windows
-    unless $::kernel == 'Windows' {
+    unless $::kernel == 'windows' {
 
         # Debian 8.x requires some tweaks.
         if $::lsbdistcodename == 'jessie' {
