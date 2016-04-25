@@ -19,6 +19,10 @@
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
 #   'tun5'.
+# [*nat*]
+#   NAT configuration as a hash:
+#      source: the source network (VPN address pool), for example 10.44.55.0/24
+#      destination: the destination network, for example 192.168.1.0/24
 #
 # == Examples
 #
@@ -35,7 +39,8 @@
 define openvpn::server::inline
 (
     $tunif='tun5',
-    $local_port = 1194
+    $local_port = 1194,
+    $nat=undef,
 )
 {
 
@@ -59,6 +64,18 @@ define openvpn::server::inline
         openvpn::packetfilter::server { $title:
             tunif      => $tunif,
             local_port => $local_port,
+        }
+    }
+
+    if $nat {
+        firewall {"200-NAT from ${title}-VPN network":
+            table => 'nat',
+            chain => 'POSTROUTING',
+            proto => 'all',
+            source => $nat['source'],
+            destination => $nat['destination'],
+            jump => 'SNAT',
+            tosource => $::networking['ip'],
         }
     }
 }
