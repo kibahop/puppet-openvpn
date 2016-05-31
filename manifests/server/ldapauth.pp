@@ -83,7 +83,7 @@ define openvpn::server::ldapauth
     $string_params.each |$param| {
         # validate_string does not fail on undef
         if $param == undef {
-            fail("ERROR: Parameter undefined!")
+            fail('ERROR: Parameter undefined!')
         } else {
             validate_string($param)
         }

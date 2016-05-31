@@ -69,13 +69,13 @@ define openvpn::server::inline
 
     if $nat {
         firewall {"200-NAT from ${title}-VPN network":
-            table => 'nat',
-            chain => 'POSTROUTING',
-            proto => 'all',
-            source => $nat['source'],
+            table       => 'nat',
+            chain       => 'POSTROUTING',
+            proto       => 'all',
+            source      => $nat['source'],
             destination => $nat['destination'],
-            jump => 'SNAT',
-            tosource => $::networking['ip'],
+            jump        => 'SNAT',
+            tosource    => $::networking['ip'],
         }
     }
 }
