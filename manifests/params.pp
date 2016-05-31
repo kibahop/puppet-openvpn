@@ -13,7 +13,7 @@ class openvpn::params {
             $service_name = 'openvpn'
             $pid_dir = '/var/run/openvpn'
             $pidfile_prefix = undef
-            $build_deps = [ 'lzo-devel', 'openssl-devel', 'pam-devel', 'pkcs11-helper-devel', 'gnutls-devel', 'autoconf', 'libtool', 'make' ]
+            $build_deps = [ 'lzo-devel', 'openssl-devel', 'pam-devel', 'pkcs11-helper-devel', 'gnutls-devel', 'autoconf', 'libtool', 'make', 'cmake' ]
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nobody'
@@ -33,7 +33,7 @@ class openvpn::params {
                     $pidfile_prefix = 'openvpn.'
                 }
             }
-            $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev', 'libtool', 'autoconf', 'make' ]
+            $build_deps = [ 'liblzo2-dev', 'libssl-dev', 'libpam-dev', 'libpkcs11-helper-dev', 'libtool', 'autoconf', 'make', 'cmake' ]
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nogroup'
