@@ -12,29 +12,16 @@
 #
 # == Parameters
 #
-# [*title*]
-#   While not strictly a parameter, $title is used as an identifier for the VPN 
-#   connection in filenames on the managed node.
 # [*tunif*]
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
 #   'tun5'.
+# [*local_port*]
+#   The local port on which OpenVPN listens for requests. Defaults to 1194.
 # [*nat*]
 #   NAT configuration as a hash:
 #      source: the source network (VPN address pool), for example 10.44.55.0/24
 #      destination: the destination network, for example 192.168.1.0/24
-#
-# == Examples
-#
-# Hiera example:
-#
-#  ---
-#  classes:
-#      - openvpn
-#
-#  openvpn::inline_servers:
-#      tunif: 'tun7'
-#      local_port: 1195
 #
 define openvpn::server::inline
 (
@@ -43,39 +30,12 @@ define openvpn::server::inline
     $nat=undef,
 )
 {
-
     include ::openvpn::params
-    include ::openvpn::config::server::common
 
-    openvpn::config::server::inline { $title:
-        tunif => $tunif,
-    }
-
-    if tagged('monit') {
-        openvpn::monit { $title:
-            enable_service => true,
-        }
-    }
-
-    if tagged('packetfilter') {
-        openvpn::packetfilter::common { $title:
-            tunif => $tunif,
-        }
-        openvpn::packetfilter::server { $title:
-            tunif      => $tunif,
-            local_port => $local_port,
-        }
-    }
-
-    if $nat {
-        firewall {"200-NAT from ${title}-VPN network":
-            table       => 'nat',
-            chain       => 'POSTROUTING',
-            proto       => 'all',
-            source      => $nat['source'],
-            destination => $nat['destination'],
-            jump        => 'SNAT',
-            tosource    => $::networking['ip'],
-        }
+    openvpn::server::generic { $title:
+        dynamic    => false,
+        tunif      => $tunif,
+        local_port => $local_port,
+        nat        => $nat
     }
 }

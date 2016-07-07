@@ -25,6 +25,9 @@
 #   A hash of openvpn::server::inline resources to realize.
 # [*ldapauth_servers*]
 #   A hash of openvpn::server::ldapauth resources to realize.
+#   A hash of openvpn::server::ldapauth resources to realize.
+# [*dynamic_servers*]
+#   A hash of openvpn::server::dynamic resources to realize.
 #
 # == Examples
 #
@@ -77,7 +80,8 @@ class openvpn
     $inline_clients = {},
     $passwordauth_clients = {},
     $inline_servers = {},
-    $ldapauth_servers = {}
+    $ldapauth_servers = {},
+    $dynamic_servers = {}
 
 ) inherits openvpn::params
 {
@@ -111,5 +115,6 @@ class openvpn
         create_resources('openvpn::client::passwordauth', $passwordauth_clients)
         create_resources('openvpn::server::inline', $inline_servers)
         create_resources('openvpn::server::ldapauth', $ldapauth_servers)
+        create_resources('openvpn::server::dynamic', $dynamic_servers)
     }
 }

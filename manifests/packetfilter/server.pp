@@ -6,11 +6,11 @@
 #
 define openvpn::packetfilter::server
 (
-    $tunif,
-    $local_port,
+    String         $tunif,
+    Integer        $local_port,
+    Optional[Hash] $nat = undef
 )
 {
-
     firewall { "006 ipv4 accept udp on ${tunif} to port ${local_port}":
         provider => 'iptables',
         chain    => 'INPUT',
@@ -25,5 +25,17 @@ define openvpn::packetfilter::server
         proto    => 'udp',
         dport    => $local_port,
         action   => 'accept',
+    }
+
+    if $nat {
+        firewall {"200-NAT from ${title}-VPN network":
+            table       => 'nat',
+            chain       => 'POSTROUTING',
+            proto       => 'all',
+            source      => $nat['source'],
+            destination => $nat['destination'],
+            jump        => 'SNAT',
+            tosource    => $::networking['ip'],
+        }
     }
 }

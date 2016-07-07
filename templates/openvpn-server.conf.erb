@@ -1,0 +1,30 @@
+### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+
+server <%= @vpn_network %> <%= @vpn_netmask %>
+port 1194
+proto udp
+dev <%= @tunif %>
+comp-lzo
+persist-key
+persist-tun
+keepalive 10 120
+user <%= scope['openvpn::params::nobody'] %>
+group <%= scope['openvpn::params::nogroup'] %>
+status <%= @title %>-status.log
+verb 4
+
+# Certificates and keys
+ca <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ca.crt
+cert <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.crt
+key <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.key
+dh <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-dh.pem
+tls-auth <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ta.key 0
+
+max-clients <%= @max_clients %>
+client-config-dir <%= @title %>-ccd
+ifconfig-pool-persist <%= @title %>-ipp.txt
+client-to-client
+
+<% @push.each do |option| -%>
+push <%= option %>
+<% end -%>

@@ -5,7 +5,20 @@ A module for managing OpenVPN daemons
 
 # Module usage
 
+A hiera example:
+
+    ---
+    classes:
+        - openvpn
+    
+    openvpn::inline_servers:
+        tunif: 'tun7'
+        local_port: 1195
+
+For more details refer to the module documentation:
+
 * [Class: openvpn](manifests/init.pp)
+* [Define: openvpn::server::dynamic](manifests/server/dynamic.pp)
 * [Define: openvpn::server::inline](manifests/server/inline.pp)
 * [Define: openvpn::server::ldapauth](manifests/server/ldapauth.pp)
 * [Define: openvpn::client::inline](manifests/client/inline.pp)
