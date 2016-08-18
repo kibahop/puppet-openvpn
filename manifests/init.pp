@@ -21,6 +21,8 @@
 #   A hash of openvpn::client::inline resources to realize.
 # [*passwordauth_clients*]
 #   A hash of openvpn::client::passwordauth resources to realize.
+# [*dynamic_clients*]
+#   A hash of openvpn::client::dynamic resources to realize.
 # [*inline_servers*]
 #   A hash of openvpn::server::inline resources to realize.
 # [*ldapauth_servers*]
@@ -79,6 +81,7 @@ class openvpn
     $enable_service = true,
     $inline_clients = {},
     $passwordauth_clients = {},
+    $dynamic_clients = {},
     $inline_servers = {},
     $ldapauth_servers = {},
     $dynamic_servers = {}
@@ -113,6 +116,7 @@ class openvpn
 
         create_resources('openvpn::client::inline', $inline_clients)
         create_resources('openvpn::client::passwordauth', $passwordauth_clients)
+        create_resources('openvpn::client::dynamic', $dynamic_clients)
         create_resources('openvpn::server::inline', $inline_servers)
         create_resources('openvpn::server::ldapauth', $ldapauth_servers)
         create_resources('openvpn::server::dynamic', $dynamic_servers)

@@ -57,29 +57,18 @@
 #  
 define openvpn::client::inline
 (
-    $enable_service=true,
-    $tunif='tun10',
-    $clientname = undef
+    Boolean          $enable_service = true,
+    String           $tunif = 'tun10',
+    Optional[String] $clientname = undef
 )
 {
 
     include ::openvpn::params
 
-    openvpn::config::client::inline { $title:
+    openvpn::client::generic { $title:
+        dynamic        => false,
         enable_service => $enable_service,
         tunif          => $tunif,
         clientname     => $clientname,
-    }
-
-    if tagged('monit') {
-        openvpn::monit { $title:
-            enable_service => $enable_service,
-        }
-    }
-
-    if tagged('packetfilter') {
-        openvpn::packetfilter::common { "openvpn-${title}":
-            tunif => $tunif,
-        }
     }
 }

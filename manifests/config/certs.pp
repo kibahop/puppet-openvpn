@@ -24,8 +24,8 @@ define openvpn::config::certs
     $config_dir = $::openvpn::params::config_dir
     $dh = "${title}-dh.pem"
     $ta = "${title}-ta.key"
-    $cert = "${title}-${::fqdn}.crt"
-    $key = "${title}-${::fqdn}.key"
+    $cert = "${title}.crt"
+    $key = "${title}.key"
     $ca = "${title}-ca.crt"
 
     File {
@@ -52,11 +52,11 @@ define openvpn::config::certs
     if $manage_certs {
         file { "openvpn-${cert}":
             name   => "${config_dir}/${cert}",
-            source => "puppet:///files/openvpn-${cert}",
+            source => "puppet:///files/openvpn-${title}-${::fqdn}.crt",
         }
         file { "openvpn-${key}":
             name   => "${config_dir}/${key}",
-            source => "puppet:///files/openvpn-${key}",
+            source => "puppet:///files/openvpn-${title}-${::fqdn}.key",
             mode   => '0600',
         }
         file { "openvpn-${ca}":

@@ -46,8 +46,7 @@
 #   The local port on which OpenVPN listens for requests. Defaults to 1194.
 # [*use_puppetcerts*]
 #   Reuse Puppet's certificates for OpenVPN. Valid values are true (default) and 
-#   false. Right now, if this is set to false Puppet does not manage OpenVPN's 
-#   keys and certificates at all.
+#   false.
 # [*push*]
 #   An array of configuration settings to push from the server to the clients.
 #   Defaults to undef.

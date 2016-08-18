@@ -44,7 +44,7 @@
 #   files. Very useful if you want to reuse the same client configuration on
 #   several different nodes. For example, if you created a file called
 #   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the
-#   $clientname.
+#   $clientname. No default value.
 #
 # == Examples
 #
@@ -63,21 +63,37 @@
 #
 define openvpn::client::passwordauth
 (
-    $enable_service=true,
-    $tunif='tun10',
-    $username=undef,
-    $password=undef,
-    $clientname = undef
+    Boolean          $enable_service = true,
+    String           $tunif = 'tun10',
+    Optional[String] $username = undef,
+    Optional[String] $password = undef,
+    Optional[String] $clientname = undef
 )
 {
-    openvpn::client::inline { $title:
+    openvpn::client::generic { $title:
+        dynamic        => false,
         enable_service => $enable_service,
         tunif          => $tunif,
         clientname     => $clientname,
     }
 
-    openvpn::config::client::passwordauth { $title:
-        username => $username,
-        password => $password,
+    # Only install a credentials file if a username and password are given. Note 
+    # that the configuration file needs to have
+    #
+    # ask-user-pass <title>.pass
+    #
+    # in it for this to have any effect.
+    #
+    if ($username) and ($password) {
+        file { "openvpn-${title}.pass":
+            ensure  => present,
+            name    => "${::openvpn::params::config_dir}/${title}.pass",
+            content => template('openvpn/client-passwordauth.pass.erb'),
+            owner   => $::os::params::adminuser,
+            group   => $::os::params::admingroup,
+            mode    => '0600',
+            require => Class['openvpn::install'],
+            notify  => Class['openvpn::service'],
+        }
     }
 }

@@ -1,26 +1,38 @@
 #
-# == Define: openvpn::config::client::inline
+# == Define: openvpn::client::generic
 #
-# Configuration specific for OpenVPN clients that use inline configuration 
-# files.
+# Generic parts of OpenVPN client configuration. In theory this define should
+# only do stuff that is required by both static and dynamic OpenVPN configs, but
+# for various reasons that became too hairy. So, right now, this class simply
+# adjusts its behavior based on parameters it's given.
 #
-define openvpn::config::client::inline
+define openvpn::client::generic
 (
-    $enable_service,
-    $tunif,
-    $clientname
+    Boolean           $dynamic,
+    Boolean           $enable_service = true,
+    String            $tunif='tun10',
+    Optional[String]  $remote_ip = undef,
+    Optional[Integer] $remote_port = undef,
+    Optional[String]  $clientname = undef
 )
 {
     include ::openvpn::params
 
-    # Determine whether to use a configuration file tailored for this node, or 
-    # for some other node. The latter is useful when a single configuration file 
-    # will work on multiple clients (e.g. when using password authentication).
-    if $clientname {
-        $certname = $clientname
+    # Determine whether to build the configuration file, or to use a static file 
+    # from the puppet fileserver
+    if $dynamic {
+        $source = undef
+        $content = template('openvpn/openvpn-client.conf.erb')
     } else {
-        $certname = $::fqdn
+        # Allow reusing generic configuration files, or certificates meant for 
+        # other nodes.
+        $source = $clientname ? {
+            undef   => "puppet:///files/openvpn-${title}-${::fqdn}.conf",
+            default => "puppet:///files/openvpn-${title}-${clientname}.conf",
+        }
+        $content = undef
     }
+    $config = "${::openvpn::params::config_dir}/${title}.conf"
 
     # On systemd we don't have to play tricks with file extensions; instead we 
     # play tricks with links, because enabling individual OpenVPN connections 
@@ -34,8 +46,9 @@ define openvpn::config::client::inline
         # Add the configuration file
         file { "openvpn-${title}.conf":
             ensure  => present,
-            name    => "${::openvpn::params::config_dir}/${title}.conf",
-            source  => "puppet:///files/openvpn-${title}-${certname}.conf",
+            name    => $config,
+            source  => $source,
+            content => $content,
             owner   => $::os::params::adminuser,
             group   => $::os::params::admingroup,
             mode    => '0644',
@@ -72,7 +85,8 @@ define openvpn::config::client::inline
         file { "openvpn-${title}.conf-active":
             ensure  => present,
             name    => $active_config,
-            source  => "puppet:///files/openvpn-${title}-${certname}.conf",
+            source  => $source,
+            content => $content,
             owner   => $::os::params::adminuser,
             group   => $::os::params::admingroup,
             mode    => '0644',
@@ -86,6 +100,18 @@ define openvpn::config::client::inline
             name    => $inactive_config,
             require => File["openvpn-${title}.conf-active"],
             notify  => Class['openvpn::service'],
+        }
+    }
+
+    if tagged('monit') {
+        openvpn::monit { $title:
+            enable_service => $enable_service,
+        }
+    }
+
+    if tagged('packetfilter') {
+        openvpn::packetfilter::common { "openvpn-${title}":
+            tunif => $tunif,
         }
     }
 }
