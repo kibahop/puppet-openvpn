@@ -3,32 +3,7 @@
 #
 # Setup an OpenVPN server based on a configuration file template. This define
 # can reuse Puppet certificates and keys, or use ones created with another CA 
-# such as Easy-RSA 3. If you use an external CA, you need to place the CA cert
-# as well as the server's certificate and key to the Puppet fileserver:
-#
-#     "puppet:///files/openvpn-${title}-${::fqdn}.key"
-#     "puppet:///files/openvpn-${title}-${::fqdn}.crt"
-#     "puppet:///files/openvpn-${title}-ca.crt"
-#
-# Even if you decide to reuse Puppet certificates and keys, you need to generate 
-# two additional files per OpenVPN server instance and place them to the Puppet 
-# fileserver:
-#
-#     "puppet:///files/openvpn-${title}-ta.key" (TLS auth key)
-#     "puppet:///files/openvpn-${title}-dh.pem" (Diffie-Helmann parameters)
-#
-# To create the TLS auth key do
-#
-#     cd /etc/puppetlabs/code/files
-#     openvpn --genkey --secret openvpn-${title}-ta.key
-#
-# To create the Diffie-Hellman parameters do
-#
-#     git clone https://github.com/OpenVPN/easy-rsa
-#     cd easy-rsa/easyrsa3
-#     ./easyrsa init-pki
-#     ./easyrsa gen-dh
-#     cp dh.pem /etc/puppetlabs/code/files/openvpn-${title}-dh.pem
+# such as Easy-RSA 3.
 #
 # == Parameters
 #
