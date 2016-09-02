@@ -20,6 +20,9 @@ cert <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.crt
 key <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.key
 tls-auth <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ta.key 1
 
+# Ensure that we're talking to a server
+remote-cert-tls server
+
 script-security 2
 <%= @up_line %>
 <%= @down_line %>
