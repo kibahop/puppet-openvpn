@@ -4,7 +4,7 @@
 # Setup an OpenVPN server based on a configuration file template. This define
 # can reuse Puppet certificates and keys, or use ones created with another CA 
 # such as Easy-RSA 3. If you use an external CA, you need to place the CA cert
-# as well as the server's certificate and key to the Puppet filserver:
+# as well as the server's certificate and key to the Puppet fileserver:
 #
 #     "puppet:///files/openvpn-${title}-${::fqdn}.key"
 #     "puppet:///files/openvpn-${title}-${::fqdn}.crt"
