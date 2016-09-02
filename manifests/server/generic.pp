@@ -14,6 +14,7 @@
 #   directory, or use a static one stored on the Puppet fileserver. Valid values 
 #   are true (default) and false. If this is set to false, many of the 
 #   parameters in this define are not used for anything, and can be ignored.
+#
 define openvpn::server::generic
 (
     Boolean                 $dynamic,
@@ -68,6 +69,17 @@ define openvpn::server::generic
         source  => $source,
         content => $content,
         mode    => '0644',
+    }
+
+    # Enable the service by default - it is unlikely that we'd want to launch 
+    # server instances manually.
+    if str2bool($::has_systemd) {
+        file { "openvpn@${title}.service":
+            ensure  => link,
+            path    => "/etc/systemd/system/multi-user.target.wants/openvpn@${title}.service",
+            target  => '/usr/lib/systemd/system/openvpn@.service',
+            require => File["openvpn-${title}.conf"],
+        }
     }
 
     if tagged('packetfilter') {
