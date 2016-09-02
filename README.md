@@ -1,26 +1,57 @@
 openvpn
 =======
 
-A module for managing OpenVPN daemons
+A module for managing OpenVPN daemons. The module supports template-based 
+servers and clients, as well as those based on a static configuration file with 
+inlined certificates. The former is recommended, because use of static 
+configuration files does not scale well.
+
+The module can optionally reuse existing Puppet certificates for OpenVPN.
 
 # Module usage
 
-A hiera example:
+A Hiera example where a dynamic server with (hopefully) sane default 
+configuration is setup:
 
-    ---
     classes:
         - openvpn
     
-    openvpn::inline_servers:
-        tunif: 'tun7'
-        local_port: 1195
+    openvpn::dynamic_servers:
+        office:
+            vpn_network: '10.160.0.0'
+            vpn_netmask: '255.255.255.0'
+            use_puppetcerts: false
+            tunif: 'tun10'
+        push:
+            - 'route 10.260.0.0 255.255.255.0'
+            - 'dhcp-option DNS 10.260.0.1'
+            - 'dhcp-option DOMAIN internal.company.com'
 
-For more details refer to the module documentation:
+Here we setup a client to connect to the above server, and occasionally to an 
+external VPN service provider using a static configuration file:
+
+    classes:
+        - openvpn
+    
+    openvpn::dynamic_clients:
+        office:
+            remote_ip: 'office-vpn-server'
+            tunif: 'tun10'
+            use_puppetcerts: false
+            enable_service: false
+    
+    openvpn::inline_clients:
+        vpn_provider:
+            tunif: 'tun11'
+            enable_service: false
+
+For more details please refer to the class and define documentation:
 
 * [Class: openvpn](manifests/init.pp)
 * [Define: openvpn::server::dynamic](manifests/server/dynamic.pp)
 * [Define: openvpn::server::inline](manifests/server/inline.pp)
 * [Define: openvpn::server::ldapauth](manifests/server/ldapauth.pp)
+* [Define: openvpn::client::dynamic](manifests/client/dynamic.pp)
 * [Define: openvpn::client::inline](manifests/client/inline.pp)
 * [Define: openvpn::client::ldapauth](manifests/client/ldapauth.pp)
 
