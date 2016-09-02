@@ -21,5 +21,5 @@ key <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.key
 tls-auth <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ta.key 1
 
 script-security 2
-up <%= scope['openvpn::params::config_dir'] %>/clientup.sh
-down <%= scope['openvpn::params::config_dir'] %>/clientdown.sh
+<%= @up_line %>
+<%= @down_line %>

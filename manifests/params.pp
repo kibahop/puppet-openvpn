@@ -17,6 +17,8 @@ class openvpn::params {
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nobody'
+            $up_script = undef
+            $down_script = undef
         }
         'Debian': {
             $package_name = 'openvpn'
@@ -37,6 +39,8 @@ class openvpn::params {
             $config_dir = '/etc/openvpn'
             $nobody = 'nobody'
             $nogroup = 'nogroup'
+            $up_script = '/etc/openvpn/update-resolv-conf'
+            $down_script = '/etc/openvpn/update-resolv-conf'
         }
         'windows': {
             $package_name = 'openvpn'

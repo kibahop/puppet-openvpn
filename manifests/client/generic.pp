@@ -13,10 +13,22 @@ define openvpn::client::generic
     String            $tunif='tun10',
     Optional[String]  $remote_ip = undef,
     Optional[Integer] $remote_port = undef,
-    Optional[String]  $clientname = undef
+    Optional[String]  $clientname = undef,
+    Optional[String]  $up_script = undef,
+    Optional[String]  $down_script = undef
 )
 {
     include ::openvpn::params
+
+    # Configure up and down scripts as necessary
+    $up_line = $up_script ? {
+        undef   => undef,
+        default => "up ${up_script}",
+    }
+    $down_line = $down_script ? {
+        undef   => undef,
+        default => "down ${down_script}",
+    }
 
     # Determine whether to build the configuration file, or to use a static file 
     # from the puppet fileserver

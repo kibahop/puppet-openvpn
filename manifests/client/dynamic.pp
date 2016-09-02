@@ -33,14 +33,24 @@
 # [*enable_service*]
 #   Whether to enable this connection at boot time, and to keep it running. 
 #   Valid values are true (default) and false.
+# [*up_script*]
+#   A script to run after successful TUN/TAP device open. Typically this is used 
+#   to setup /etc/resolv.conf. The default value is to use the operating 
+#   system's default up script. For example, on Debian, this is 
+#   "/etc/openvpn/update-resolv-conf". Set to undef to not run the script even 
+#   if one is provided by the operating system.
+# [*down_script*]
+#   Same as $up_script, but run after TUN/TAP device close instead.
 #
 define openvpn::client::dynamic
 (
-    String  $remote_ip,
-    Integer $remote_port = 1194,
-    String  $tunif = 'tun5',
-    Boolean $use_puppetcerts = true,
-    Boolean $enable_service = true
+    String           $remote_ip,
+    Integer          $remote_port = 1194,
+    String           $tunif = 'tun5',
+    Boolean          $use_puppetcerts = true,
+    Boolean          $enable_service = true,
+    Optional[String] $up_script = $::openvpn::params::up_script,
+    Optional[String] $down_script = $::openvpn::params::down_script
 )
 {
     include ::openvpn::params
@@ -51,6 +61,8 @@ define openvpn::client::dynamic
         remote_port    => $remote_port,
         enable_service => $enable_service,
         tunif          => $tunif,
+        up_script      => $up_script,
+        down_script    => $down_script,
     }
 
     if $use_puppetcerts {
