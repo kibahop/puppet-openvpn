@@ -11,7 +11,7 @@
 #
 define openvpn::monit
 (
-    $enable_service
+    Boolean $enable_service
 )
 {
     include ::openvpn::params

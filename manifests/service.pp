@@ -6,7 +6,7 @@
 #
 class openvpn::service
 (
-    $enable
+    Boolean $enable
 
 ) inherits openvpn::params {
 

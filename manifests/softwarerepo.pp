@@ -8,7 +8,7 @@
 #
 class openvpn::softwarerepo
 (
-    $repository
+    Optional[Enum['stable','testing','release/2.3','release/2.4']] $repository = undef
 
 ) inherits openvpn::params
 {

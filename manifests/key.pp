@@ -16,8 +16,8 @@
 #
 define openvpn::key
 (
-    $mode,
-    $type = 'private'
+    String $mode,
+    Enum['shared','private'] $type = 'private'
 )
 {
     include ::openvpn::params

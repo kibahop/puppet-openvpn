@@ -79,15 +79,15 @@
 #
 class openvpn
 (
-    $use_latest_release = false,
-    Optional[Enum['stable','testing','release/2.3','release/2.4']] $repository = undef,
-    $enable_service = true,
-    $inline_clients = {},
-    $passwordauth_clients = {},
-    $dynamic_clients = {},
-    $inline_servers = {},
-    $ldapauth_servers = {},
-    $dynamic_servers = {}
+    Boolean $use_latest_release = false,
+            $repository = undef,
+            $enable_service = true,
+    Hash    $inline_clients = {},
+    Hash    $passwordauth_clients = {},
+    Hash    $dynamic_clients = {},
+    Hash    $inline_servers = {},
+    Hash    $ldapauth_servers = {},
+    Hash    $dynamic_servers = {}
 
 ) inherits openvpn::params
 {
