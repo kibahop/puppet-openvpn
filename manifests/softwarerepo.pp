@@ -8,24 +8,22 @@
 #
 class openvpn::softwarerepo
 (
-    $use_latest_release
+    $repository
 
 ) inherits openvpn::params
 {
 
-    if ($::osfamily == 'Debian') and ($use_latest_release) {
+    if $::osfamily == 'Debian' {
 
-        include ::apt
-
-        $ensure_source = $use_latest_release ? {
-            true => present,
-            false  => absent,
-            default => absent,
+        $ensure_source = $repository ? {
+            undef   => 'absent',
+            default => 'present',
         }
+        include ::apt
 
         apt::source { 'openvpn-aptrepo':
             ensure   => $ensure_source,
-            location => 'http://swupdate.openvpn.net/apt',
+            location => "http://build.openvpn.net/debian/openvpn/${repository}",
             release  => $::lsbdistcodename,
             repos    => 'main',
             pin      => '501',

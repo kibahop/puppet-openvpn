@@ -9,10 +9,13 @@
 # == Parameters
 #
 # [*use_latest_release*]
-#   Use latest release from the OpenVPN project. Valid values are true and 
-#   false. Defaults to false, which means that the operating system's default 
-#   packages are used. This currently only works for Debian-based operating 
-#   systems: setting it to true on any other operating systems has no effect.
+#   This parameter has been removed, and if it is set to true, the puppet run 
+#   will fail with an error message.
+# [*repository*]
+#   The OpenVPN repository to use. This can be one of 'stable', 'testing', 
+#   'release/2.3', 'release/2.4' or undef (default). Undef means that openvpn 
+#   from the distribution's default repositories is used. This parameter only 
+#   has an effect on Debian-based operating systems.
 # [*enable_service*]
 #   Enable OpenVPN service on boot. Valid values are true (default) and false. 
 #   This only affects non-systemd distros which may or may not have built-in 
@@ -36,7 +39,7 @@
 #   classes:
 #       - openvpn
 #
-#   openvpn::use_latest_release: true
+#   openvpn::repository: testing
 #
 #   openvpn::ldapauth_servers:
 #       server1:
@@ -77,6 +80,7 @@
 class openvpn
 (
     $use_latest_release = false,
+    Optional[Enum['stable','testing','release/2.3','release/2.4']] $repository = undef,
     $enable_service = true,
     $inline_clients = {},
     $passwordauth_clients = {},
@@ -88,6 +92,10 @@ class openvpn
 ) inherits openvpn::params
 {
 
+    if $use_latest_release {
+        fail('ERROR: parameter $use_latest_release is invalid, please use $repository instead!')
+    }
+
     # Parts that work on all supported platforms
     include ::openvpn::install
 
@@ -96,7 +104,7 @@ class openvpn
     # repositories or not.
     #
     class { '::openvpn::softwarerepo':
-        use_latest_release => $use_latest_release,
+        repository => $repository,
     }
 
     include ::openvpn::install
