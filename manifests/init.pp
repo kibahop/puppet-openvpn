@@ -27,7 +27,6 @@
 #   A hash of openvpn::server::inline resources to realize.
 # [*ldapauth_servers*]
 #   A hash of openvpn::server::ldapauth resources to realize.
-#   A hash of openvpn::server::ldapauth resources to realize.
 # [*dynamic_servers*]
 #   A hash of openvpn::server::dynamic resources to realize.
 #
