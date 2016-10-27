@@ -25,6 +25,9 @@ client-config-dir <%= @title %>-ccd
 ifconfig-pool-persist <%= @title %>-ipp.txt
 client-to-client
 
+<% @routes.each do |route| -%>
+route <%= route %>
+<% end -%>
 <% @push.each do |option| -%>
 push <%= option %>
 <% end -%>

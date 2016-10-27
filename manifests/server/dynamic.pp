@@ -22,6 +22,8 @@
 # [*use_puppetcerts*]
 #   Reuse Puppet's certificates for OpenVPN. Valid values are true (default) and 
 #   false.
+# [*route*]
+#   An array of routes to setup on the server. Defaults to undef.
 # [*push*]
 #   An array of configuration settings to push from the server to the clients.
 #   Defaults to undef.
@@ -38,6 +40,7 @@ define openvpn::server::dynamic
     Integer        $max_clients = 50,
     Integer        $local_port = 1194,
     Boolean        $use_puppetcerts = true,
+    Array[String]  $routes = [],
     Array[String]  $push = [],
     Optional[Hash] $nat = undef
 )
@@ -51,6 +54,7 @@ define openvpn::server::dynamic
         tunif       => $tunif,
         max_clients => $max_clients,
         local_port  => $local_port,
+        routes      => $routes,
         push        => $push,
         nat         => $nat,
     }

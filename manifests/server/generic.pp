@@ -23,6 +23,7 @@ define openvpn::server::generic
     Optional[String]        $vpn_netmask = undef,
     Optional[Integer]       $max_clients = undef,
     Optional[Integer]       $local_port = undef,
+    Optional[Array[String]] $routes = undef,
     Optional[Array[String]] $push = undef,
     Optional[Hash]          $nat = undef
 )
