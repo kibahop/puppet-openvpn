@@ -33,38 +33,6 @@
 # [*dynamic_servers*]
 #   A hash of openvpn::server::dynamic resources to realize.
 #
-# == Examples
-#
-#   ---
-#   classes:
-#       - openvpn
-#
-#   openvpn::repository: testing
-#
-#   openvpn::ldapauth_servers:
-#       server1:
-#           tunif: 'tun6'
-#
-#   openvpn::inline_clients:
-#       client1:
-#           enable_service: false
-#           tunif: 'tun10'
-#       client2:
-#           enable_service: true
-#           tunif: 'tun11'
-#
-#   openvpn::passwordauth_clients:
-#       client3:
-#           enable_service: false
-#           tunif: 'tun12'
-#           username: 'johndoe'
-#           password: 'password'
-#       client4:
-#           enable_service: false
-#           tunif: 'tun13'
-#           username: 'claudius'
-#           password: 'maximus'
-#
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
