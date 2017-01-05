@@ -77,19 +77,20 @@ class openvpn
 
     include ::openvpn::install
 
+    # Debian 8.x requires some tweaks.
+    if $::lsbdistcodename == 'jessie' {
+        include ::openvpn::config::jessie
+    }
+
+    class { '::openvpn::service':
+        enable => $enable_service,
+    }
+
+    create_resources('openvpn::client::inline', $inline_clients)
+
     # We only have limited support for Windows
     unless $::kernel == 'windows' {
 
-        # Debian 8.x requires some tweaks.
-        if $::lsbdistcodename == 'jessie' {
-            include ::openvpn::config::jessie
-        }
-
-        class { '::openvpn::service':
-            enable => $enable_service,
-        }
-
-        create_resources('openvpn::client::inline', $inline_clients)
         create_resources('openvpn::client::passwordauth', $passwordauth_clients)
         create_resources('openvpn::client::dynamic', $dynamic_clients)
         create_resources('openvpn::server::inline', $inline_servers)

@@ -20,6 +20,9 @@ define openvpn::client::generic
 {
     include ::openvpn::params
 
+    # Shorthand for config file extension
+    $ext = $::openvpn::params::config_ext
+
     # Configure up and down scripts as necessary
     $up_line = $up_script ? {
         undef   => undef,
@@ -44,7 +47,12 @@ define openvpn::client::generic
         }
         $content = undef
     }
-    $config = "${::openvpn::params::config_dir}/${title}.conf"
+
+    # Special case path for Windows
+    $config = $::kernel ? {
+        'windows' => "${::openvpn::params::config_dir}\\${title}.${ext}",
+        default   => "${::openvpn::params::config_dir}/${title}.${ext}"
+    }
 
     # On systemd we don't have to play tricks with file extensions; instead we 
     # play tricks with links, because enabling individual OpenVPN connections 
@@ -86,11 +94,11 @@ define openvpn::client::generic
     # complexity going through the roof.
     } else {
         if $enable_service {
-            $active_config = "${::openvpn::params::config_dir}/${title}.conf"
-            $inactive_config = "${::openvpn::params::config_dir}/${title}.conf.disabled"
+            $active_config = "${::openvpn::params::config_dir}/${title}.${ext}"
+            $inactive_config = "${::openvpn::params::config_dir}/${title}.${ext}.disabled"
         } else {
-            $active_config = "${::openvpn::params::config_dir}/${title}.conf.disabled"
-            $inactive_config = "${::openvpn::params::config_dir}/${title}.conf"
+            $active_config = "${::openvpn::params::config_dir}/${title}.${ext}.disabled"
+            $inactive_config = "${::openvpn::params::config_dir}/${title}.${ext}"
         }
 
         # Add the active configuration file

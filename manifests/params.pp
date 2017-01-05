@@ -11,6 +11,8 @@ class openvpn::params {
         'RedHat': {
             $package_name = 'openvpn'
             $package_require = undef
+            $package_install_options = undef
+            $config_ext = 'conf'
             $service_name = 'openvpn'
             $pid_dir = '/var/run/openvpn'
             $pidfile_prefix = undef
@@ -24,7 +26,9 @@ class openvpn::params {
         'Debian': {
             $package_name = 'openvpn'
             $package_require = undef
+            $package_install_options = undef
             $ldapplugin_package_name = 'openvpn-auth-ldap'
+            $config_ext = 'conf'
             $service_name = 'openvpn'
 
             case $::lsbdistcodename {
@@ -47,6 +51,10 @@ class openvpn::params {
         'windows': {
             $package_name = 'openvpn'
             $package_require = Class['chocolatey']
+            $package_install_options = ['/SELECT_EASYRSA=0']
+            $config_dir = 'C:\Program Files\OpenVPN\config'
+            $config_ext = 'ovpn'
+            $service_name = 'openvpnservice'
         }
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
