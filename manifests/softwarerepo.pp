@@ -32,5 +32,7 @@ class openvpn::softwarerepo
                 'source' => 'https://swupdate.openvpn.net/repos/repo-public.gpg',
             }
         }
+    } elsif $::kernel == 'windows' {
+        include ::chocolatey
     }
 }

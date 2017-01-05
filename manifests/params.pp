@@ -10,6 +10,7 @@ class openvpn::params {
     case $::osfamily {
         'RedHat': {
             $package_name = 'openvpn'
+            $package_require = undef
             $service_name = 'openvpn'
             $pid_dir = '/var/run/openvpn'
             $pidfile_prefix = undef
@@ -22,6 +23,7 @@ class openvpn::params {
         }
         'Debian': {
             $package_name = 'openvpn'
+            $package_require = undef
             $ldapplugin_package_name = 'openvpn-auth-ldap'
             $service_name = 'openvpn'
 
@@ -44,6 +46,7 @@ class openvpn::params {
         }
         'windows': {
             $package_name = 'openvpn'
+            $package_require = Class['chocolatey']
         }
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
