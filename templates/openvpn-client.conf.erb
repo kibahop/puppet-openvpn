@@ -15,10 +15,17 @@ status openvpn-<%= @title %>-status.log
 verb 4
 
 # Certificates and keys
+<% if @kernel == 'windows' -%>
+ca "<%= scope['openvpn::params::config_dir_esc'] %>\\<%= @title %>-ca.crt"
+cert "<%= scope['openvpn::params::config_dir_esc'] %>\\<%= @title %>.crt"
+key "<%= scope['openvpn::params::config_dir_esc'] %>\\<%= @title %>.key"
+tls-auth "<%= scope['openvpn::params::config_dir_esc'] %>\\<%= @title %>-ta.key" 1
+<% else -%>
 ca <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ca.crt
 cert <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.crt
 key <%= scope['openvpn::params::config_dir'] %>/<%= @title %>.key
 tls-auth <%= scope['openvpn::params::config_dir'] %>/<%= @title %>-ta.key 1
+<% end -%>
 
 # Ensure that we're talking to a server
 remote-cert-tls server

@@ -88,11 +88,11 @@ class openvpn
 
     create_resources('openvpn::client::inline', $inline_clients)
     create_resources('openvpn::client::passwordauth', $passwordauth_clients)
+    create_resources('openvpn::client::dynamic', $dynamic_clients)
 
     # We only have limited support for Windows
     unless $::kernel == 'windows' {
 
-        create_resources('openvpn::client::dynamic', $dynamic_clients)
         create_resources('openvpn::server::inline', $inline_servers)
         create_resources('openvpn::server::ldapauth', $ldapauth_servers)
         create_resources('openvpn::server::dynamic', $dynamic_servers)

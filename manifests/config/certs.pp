@@ -21,12 +21,23 @@ define openvpn::config::certs
 )
 {
     # Use conveniently short variable names to improve readability
-    $config_dir = $::openvpn::params::config_dir
+
+    # Special case path for Windows
+    $config_dir = $::kernel ? {
+        'windows' => "${::openvpn::params::config_dir}\\",
+        default   => "${::openvpn::params::config_dir}/"
+    }
     $dh = "${title}-dh.pem"
     $ta = "${title}-ta.key"
     $cert = "${title}.crt"
     $key = "${title}.key"
     $ca = "${title}-ca.crt"
+
+    $dh_path = "${config_dir}${dh}"
+    $ta_path = "${config_dir}${ta}"
+    $cert_path = "${config_dir}${cert}"
+    $key_path = "${config_dir}${key}"
+    $ca_path = "${config_dir}${ca}"
 
     File {
         owner   => $::os::params::adminuser,
@@ -37,30 +48,30 @@ define openvpn::config::certs
 
     # Always manage the TLS auth key
     file { "openvpn-${ta}":
-        name   => "${config_dir}/${ta}",
+        name   => $ta_path,
         source => "puppet:///files/openvpn-${ta}",
         mode   => '0600',
     }
 
     if $manage_dh {
         file { "openvpn-${dh}":
-            name   => "${config_dir}/${dh}",
+            name   => $dh_path,
             source => "puppet:///files/openvpn-${dh}",
         }
     }
 
     if $manage_certs {
         file { "openvpn-${cert}":
-            name   => "${config_dir}/${cert}",
+            name   => $cert_path,
             source => "puppet:///files/openvpn-${title}-${::fqdn}.crt",
         }
         file { "openvpn-${key}":
-            name   => "${config_dir}/${key}",
+            name   => $key_path,
             source => "puppet:///files/openvpn-${title}-${::fqdn}.key",
             mode   => '0600',
         }
         file { "openvpn-${ca}":
-            name   => "${config_dir}/${ca}",
+            name   => $ca_path,
             source => "puppet:///files/openvpn-${ca}",
         }
     }
