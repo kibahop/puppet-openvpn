@@ -27,23 +27,32 @@ configuration is setup:
             - 'dhcp-option DNS 10.260.0.1'
             - 'dhcp-option DOMAIN internal.company.com'
 
-Here we setup a client to connect to the above server, and occasionally to an 
-external VPN service provider using a static configuration file:
+Here we setup a client to connect automatically to the above "office" server,
+and occasionally to an external VPN service provider using a static
+configuration file:
 
     classes:
         - openvpn
+
+    openvpn::enable_service: true
     
     openvpn::dynamic_clients:
         office:
             remote_ip: 'office-vpn-server'
             tunif: 'tun10'
             use_puppetcerts: false
-            enable_service: false
+            enable_service: true
     
     openvpn::inline_clients:
         vpn_provider:
             tunif: 'tun11'
             enable_service: false
+
+The $enable_service parameter of the main class enables the OpenVPN system
+service, except on systemd distros, where the parameter makes no difference. The
+system service will then launch all individual OpenVPN connections which have
+$enable_service set to true. In the example right above the "office" connection
+is started automatically on boot, but the "vpn_provider" connection is not.
 
 If you use an external CA, you need to place the CA cert as well as the
 client/server certificate and key to the Puppet fileserver:
@@ -96,6 +105,7 @@ This module has been tested on
 * Ubuntu 14.04
 * Fedora 21
 * CentOS 7
+* Windows 7 (no server or puppet certificate support)
 
 The following operating systems should work out of the box or with small
 modifications:
