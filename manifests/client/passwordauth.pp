@@ -77,6 +77,12 @@ define openvpn::client::passwordauth
         clientname     => $clientname,
     }
 
+    # Special case path for Windows
+    $passfile = $::kernel ? {
+        'windows' => "${::openvpn::params::config_dir}\\${title}.pass",
+        default   => "${::openvpn::params::config_dir}/${title}.pass"
+    }
+
     # Only install a credentials file if a username and password are given. Note 
     # that the configuration file needs to have
     #
@@ -87,7 +93,7 @@ define openvpn::client::passwordauth
     if ($username) and ($password) {
         file { "openvpn-${title}.pass":
             ensure  => present,
-            name    => "${::openvpn::params::config_dir}/${title}.pass",
+            name    => $passfile,
             content => template('openvpn/client-passwordauth.pass.erb'),
             owner   => $::os::params::adminuser,
             group   => $::os::params::admingroup,
