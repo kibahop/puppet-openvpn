@@ -17,6 +17,8 @@
 #
 define openvpn::server::generic
 (
+    Boolean                 $manage_packetfilter,
+    Boolean                 $manage_monit,
     Boolean                 $dynamic,
     String                  $tunif = 'tun5',
     Optional[String]        $vpn_network = undef,
@@ -83,7 +85,7 @@ define openvpn::server::generic
         }
     }
 
-    if tagged('packetfilter') {
+    if $manage_packetfilter {
         openvpn::packetfilter::common { $title:
             tunif => $tunif,
         }
@@ -94,7 +96,7 @@ define openvpn::server::generic
         }
     }
 
-    if tagged('monit') {
+    if $manage_monit {
         openvpn::monit { $title:
             enable_service => true,
         }

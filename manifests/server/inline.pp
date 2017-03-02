@@ -12,6 +12,10 @@
 #
 # == Parameters
 #
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*tunif*]
 #   The name of the tunnel interface to use. Setting this manually is necessary
 #   to allow setup of proper iptables/ip6tables rules. The default value is
@@ -25,17 +29,21 @@
 #
 define openvpn::server::inline
 (
-    $tunif='tun5',
-    $local_port = 1194,
-    $nat=undef,
+    Boolean $manage_packetfilter = true,
+    Boolean $manage_monit = true,
+            $tunif='tun5',
+            $local_port = 1194,
+            $nat=undef,
 )
 {
     include ::openvpn::params
 
     openvpn::server::generic { $title:
-        dynamic    => false,
-        tunif      => $tunif,
-        local_port => $local_port,
-        nat        => $nat
+        manage_packetfilter => $manage_packetfilter,
+        manage_monit        => $manage_monit,
+        dynamic             => false,
+        tunif               => $tunif,
+        local_port          => $local_port,
+        nat                 => $nat
     }
 }

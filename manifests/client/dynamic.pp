@@ -21,6 +21,10 @@
 #
 # == Parameters
 #
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*remote_ip*]
 #   Remote VPN endpoint's IP address.
 # [*remote_port*]
@@ -45,6 +49,8 @@
 define openvpn::client::dynamic
 (
     String           $remote_ip,
+    Boolean          $manage_packetfilter = true,
+    Boolean          $manage_monit = true,
     Integer          $remote_port = 1194,
     String           $tunif = 'tun5',
     Boolean          $use_puppetcerts = true,
@@ -56,13 +62,15 @@ define openvpn::client::dynamic
     include ::openvpn::params
 
     openvpn::client::generic { $title:
-        dynamic        => true,
-        remote_ip      => $remote_ip,
-        remote_port    => $remote_port,
-        enable_service => $enable_service,
-        tunif          => $tunif,
-        up_script      => $up_script,
-        down_script    => $down_script,
+        manage_packetfilter => true,
+        manage_monit        => true,
+        dynamic             => true,
+        remote_ip           => $remote_ip,
+        remote_port         => $remote_port,
+        enable_service      => $enable_service,
+        tunif               => $tunif,
+        up_script           => $up_script,
+        down_script         => $down_script,
     }
 
     if $use_puppetcerts {

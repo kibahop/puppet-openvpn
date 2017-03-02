@@ -16,6 +16,10 @@
 #
 # == Parameters
 #
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*title*]
 #   While not strictly a parameter, $title is used as an identifier for the VPN
 #   connection in filenames on the managed node.
@@ -66,16 +70,18 @@
 #
 define openvpn::server::ldapauth
 (
-    $tunif='tun5',
-    $local_port = 1194,
-    $url = 'ldap://localhost',
-    $binddn = $::ldap_binddn,
-    $bindpw = $::ldap_bindpw,
-    $user_basedn = $::ldap_user_basedn,
-    $user_search_filter = $::ldap_user_search_filter,
-    $group_basedn = $::ldap_group_basedn,
-    $group_search_filter = $::ldap_group_search_filter,
-    $member_attribute = $::ldap_member_attribute
+    Boolean $manage_packetfilter = true,
+    Boolean $manage_monit = true,
+            $tunif='tun5',
+            $local_port = 1194,
+            $url = 'ldap://localhost',
+            $binddn = $::ldap_binddn,
+            $bindpw = $::ldap_bindpw,
+            $user_basedn = $::ldap_user_basedn,
+            $user_search_filter = $::ldap_user_search_filter,
+            $group_basedn = $::ldap_group_basedn,
+            $group_search_filter = $::ldap_group_search_filter,
+            $member_attribute = $::ldap_member_attribute
 )
 {
     # Parameter validation
@@ -105,8 +111,10 @@ define openvpn::server::ldapauth
     }
 
     openvpn::server::inline { $title:
-        tunif      => $tunif,
-        local_port => $local_port,
+        manage_packetfilter => $manage_packetfilter,
+        manage_monit        => $manage_monit,
+        tunif               => $tunif,
+        local_port          => $local_port,
     }
 
 }

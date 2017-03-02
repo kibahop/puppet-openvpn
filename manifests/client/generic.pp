@@ -8,6 +8,8 @@
 #
 define openvpn::client::generic
 (
+    Boolean           $manage_packetfilter,
+    Boolean           $manage_monit,
     Boolean           $dynamic,
     Boolean           $enable_service = true,
     String            $tunif='tun10',
@@ -123,13 +125,13 @@ define openvpn::client::generic
         }
     }
 
-    if tagged('monit') {
+    if $manage_monit {
         openvpn::monit { $title:
             enable_service => $enable_service,
         }
     }
 
-    if tagged('packetfilter') {
+    if $manage_packetfilter {
         openvpn::packetfilter::common { "openvpn-${title}":
             tunif => $tunif,
         }

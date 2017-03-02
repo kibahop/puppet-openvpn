@@ -7,6 +7,10 @@
 #
 # == Parameters
 #
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*vpn_network*]
 #   The VPN network. For example '10.8.0.0'.
 # [*vpn_netmask*]
@@ -35,6 +39,8 @@
 define openvpn::server::dynamic
 (
     String         $vpn_network,
+    Boolean        $manage_packetfilter = true,
+    Boolean        $manage_monit = true,
     String         $vpn_netmask = '255.255.255.0',
     String         $tunif = 'tun5',
     Integer        $max_clients = 50,
@@ -48,15 +54,17 @@ define openvpn::server::dynamic
     include ::openvpn::params
 
     openvpn::server::generic { $title:
-        dynamic     => true,
-        vpn_network => $vpn_network,
-        vpn_netmask => $vpn_netmask,
-        tunif       => $tunif,
-        max_clients => $max_clients,
-        local_port  => $local_port,
-        routes      => $routes,
-        push        => $push,
-        nat         => $nat,
+        manage_packetfilter => $manage_packetfilter,
+        manage_monit        => $manage_monit,
+        dynamic             => true,
+        vpn_network         => $vpn_network,
+        vpn_netmask         => $vpn_netmask,
+        tunif               => $tunif,
+        max_clients         => $max_clients,
+        local_port          => $local_port,
+        routes              => $routes,
+        push                => $push,
+        nat                 => $nat,
     }
 
     if $use_puppetcerts {

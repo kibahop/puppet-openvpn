@@ -20,6 +20,10 @@
 # [*title*]
 #   While not strictly a parameter, $title is used as an identifier for the VPN 
 #   connection in filenames and such.
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false.
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false.
 # [*enable_service*]
 #   If set to true, enable the VPN connection on startup. Valid values are true
 #   and false. Defaults to true. Note that on non-systemd distros this feature
@@ -63,6 +67,8 @@
 #
 define openvpn::client::passwordauth
 (
+    Boolean          $manage_packetfilter = true,
+    Boolean          $manage_monit = true,
     Boolean          $enable_service = true,
     String           $tunif = 'tun10',
     Optional[String] $username = undef,
@@ -71,10 +77,12 @@ define openvpn::client::passwordauth
 )
 {
     openvpn::client::generic { $title:
-        dynamic        => false,
-        enable_service => $enable_service,
-        tunif          => $tunif,
-        clientname     => $clientname,
+        manage_packetfilter => true,
+        manage_monit        => true,
+        dynamic             => false,
+        enable_service      => $enable_service,
+        tunif               => $tunif,
+        clientname          => $clientname,
     }
 
     # Special case path for Windows

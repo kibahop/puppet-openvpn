@@ -11,34 +11,38 @@ define openvpn::packetfilter::common
 {
 
     # Common rules needed on clients and servers
-    firewall { "005 ipv4 accept ${tunif}":
+    @firewall { "005 ipv4 accept ${tunif}":
         provider => 'iptables',
         chain    => 'INPUT',
         proto    => 'all',
         iniface  => $tunif,
         action   => 'accept',
+        tag      => 'default',
     }
 
-    firewall { "007 ipv4 forward ${tunif}":
+    @firewall { "007 ipv4 forward ${tunif}":
         provider => 'iptables',
         chain    => 'FORWARD',
         proto    => 'all',
         iniface  => $tunif,
         action   => 'accept',
+        tag      => 'default',
     }
 
-    firewall { "005 ipv6 accept ${tunif}":
+    @firewall { "005 ipv6 accept ${tunif}":
         provider => 'ip6tables',
         chain    => 'INPUT',
         iniface  => $tunif,
         action   => 'accept',
+        tag      => 'default',
     }
 
-    firewall { "007 ipv6 forward ${tunif}":
+    @firewall { "007 ipv6 forward ${tunif}":
         provider => 'ip6tables',
         chain    => 'FORWARD',
         proto    => 'all',
         iniface  => $tunif,
         action   => 'accept',
+        tag      => 'default',
     }
 }

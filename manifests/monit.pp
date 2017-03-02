@@ -39,7 +39,7 @@ define openvpn::monit
         $service_stop = $::openvpn::params::service_stop
     }
 
-    file { "openvpn-${title}-openvpn.monit":
+    @file { "openvpn-${title}-openvpn.monit":
         ensure  => $ensure,
         name    => "${::monit::params::fragment_dir}/openvpn-${title}.monit",
         content => template('openvpn/openvpn.monit.erb'),
@@ -48,5 +48,6 @@ define openvpn::monit
         mode    => '0600',
         require => Class['monit::config'],
         notify  => Class['monit::service'],
+        tag     => 'monit',
     }
 }
