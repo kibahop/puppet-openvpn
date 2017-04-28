@@ -29,7 +29,8 @@ configuration is setup:
 
 Here we setup a client to connect automatically to the above "office" server,
 and occasionally to an external VPN service provider using a static
-configuration file:
+configuration file and to a customer VPN using password authentication and
+a dynamically created configuration file:
 
     classes:
         - openvpn
@@ -42,6 +43,13 @@ configuration file:
             tunif: 'tun10'
             use_puppetcerts: false
             enable_service: true
+        customer:
+            remote_ip: 'vpn.customer.com'
+            tunif: 'tun12'
+            use_puppetcerts: false
+            username: 'contractor'
+            password: 'verysecret'
+            enable_service: false
     
     openvpn::inline_clients:
         vpn_provider:

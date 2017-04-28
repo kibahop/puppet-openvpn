@@ -16,6 +16,8 @@ define openvpn::client::generic
     Optional[String]  $remote_ip = undef,
     Optional[Integer] $remote_port = undef,
     Optional[String]  $clientname = undef,
+    Optional[String]  $username = undef,
+    Optional[String]  $password = undef,
     Optional[String]  $up_script = undef,
     Optional[String]  $down_script = undef
 )

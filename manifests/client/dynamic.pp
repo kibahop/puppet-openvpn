@@ -37,6 +37,12 @@
 # [*enable_service*]
 #   Whether to enable this connection at boot time, and to keep it running. 
 #   Valid values are true (default) and false.
+# [*username*]
+#   Authentication username. Defining this implies that client certificate and 
+#   private key are not needed nor installed. Defaults to undef.
+# [*password*]
+#   Authentication password. Defaults to undef, but must be defined if $username 
+#   is set.
 # [*up_script*]
 #   A script to run after successful TUN/TAP device open. Typically this is used 
 #   to setup /etc/resolv.conf. The default value is to use the operating 
@@ -55,6 +61,8 @@ define openvpn::client::dynamic
     String           $tunif = 'tun5',
     Boolean          $use_puppetcerts = true,
     Boolean          $enable_service = true,
+    Optional[String] $username = undef,
+    Optional[String] $password = undef,
     Optional[String] $up_script = $::openvpn::params::up_script,
     Optional[String] $down_script = $::openvpn::params::down_script
 )
@@ -69,6 +77,8 @@ define openvpn::client::dynamic
         remote_port         => $remote_port,
         enable_service      => $enable_service,
         tunif               => $tunif,
+        username            => $username,
+        password            => $password,
         up_script           => $up_script,
         down_script         => $down_script,
     }
@@ -80,9 +90,24 @@ define openvpn::client::dynamic
             manage_certs => false,
         }
     } else {
+        # Manage credentials file if we're using password authentication
+        if $username {
+            openvpn::config::passwordauth { $title:
+                username => $username,
+                password => $password,
+            }
+            $manage_client_certs = false
+
+        # We're not using password authentication, so we need client
+        # certificates
+        } else {
+            $manage_client_certs = true
+        }
+
         openvpn::config::certs { $title:
-            manage_dh    => false,
-            manage_certs => true
+            manage_dh           => false,
+            manage_certs        => true,
+            manage_client_certs => $manage_client_certs,
         }
     }
 }

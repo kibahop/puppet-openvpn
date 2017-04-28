@@ -13,11 +13,14 @@
 # [*manage_certs*]
 #   Whether to manage OpenVPN certificates and keys generated using some 
 #   external CA such as Easy-RSA 3. Valid values are true and false.
-
+# [*manage_client_certs*]
+#   Manage client's private key and certificate. Valid values are true and 
+#   false.
 define openvpn::config::certs
 (
     Boolean $manage_dh,
-    Boolean $manage_certs
+    Boolean $manage_certs,
+    Boolean $manage_client_certs
 )
 {
     # Use conveniently short variable names to improve readability
@@ -61,18 +64,20 @@ define openvpn::config::certs
     }
 
     if $manage_certs {
-        file { "openvpn-${cert}":
-            name   => $cert_path,
-            source => "puppet:///files/openvpn-${title}-${::fqdn}.crt",
-        }
-        file { "openvpn-${key}":
-            name   => $key_path,
-            source => "puppet:///files/openvpn-${title}-${::fqdn}.key",
-            mode   => '0600',
-        }
         file { "openvpn-${ca}":
             name   => $ca_path,
             source => "puppet:///files/openvpn-${ca}",
+        }
+        if $manage_client_certs {
+            file { "openvpn-${cert}":
+                name   => $cert_path,
+                source => "puppet:///files/openvpn-${title}-${::fqdn}.crt",
+            }
+            file { "openvpn-${key}":
+                name   => $key_path,
+                source => "puppet:///files/openvpn-${title}-${::fqdn}.key",
+                mode   => '0600',
+            }
         }
     }
 }
