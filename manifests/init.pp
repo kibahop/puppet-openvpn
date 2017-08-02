@@ -97,4 +97,7 @@ class openvpn
         create_resources('openvpn::server::ldapauth', $ldapauth_servers)
         create_resources('openvpn::server::dynamic', $dynamic_servers)
     }
+
+    # Realize monit configuration fragments
+    File <| tag == 'monit' |>
 }

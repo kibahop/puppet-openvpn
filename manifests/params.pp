@@ -33,6 +33,10 @@ class openvpn::params {
             $service_name = 'openvpn'
 
             case $::lsbdistcodename {
+                'xenial': {
+                    $pid_dir = '/run/openvpn'
+                    $pidfile_prefix = undef
+                }
                 'trusty': {
                     $pid_dir = '/var/run/openvpn'
                     $pidfile_prefix = undef
