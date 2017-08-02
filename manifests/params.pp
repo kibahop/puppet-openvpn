@@ -11,6 +11,7 @@ class openvpn::params {
         'RedHat': {
             $package_name = 'openvpn'
             $package_require = undef
+            $ldapplugin_package_name = 'openvpn-auth-ldap'
             $package_install_options = undef
             $config_ext = 'conf'
             $service_name = 'openvpn'
