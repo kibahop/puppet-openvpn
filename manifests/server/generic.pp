@@ -44,7 +44,14 @@ define openvpn::server::generic
     File {
         owner   => $::os::params::adminuser,
         group   => $::os::params::admingroup,
+        seluser => $::openvpn::params::seluser,
+        selrole => $::openvpn::params::selrole,
+        seltype => $::openvpn::params::seltype,
         require => Class['openvpn::install'],
+    }
+
+    file { "/etc/openvpn/openvpn-${title}-status.log":
+        seltype => $::openvpn::params::seltype_rw,
     }
 
     # Setup the ccd directory

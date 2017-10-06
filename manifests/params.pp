@@ -23,6 +23,10 @@ class openvpn::params {
             $nogroup = 'nobody'
             $up_script = undef
             $down_script = undef
+            $default_seluser = 'system_u'
+            $default_selrole = 'object_r'
+            $default_seltype = 'openvpn_etc_t'
+            $default_seltype_rw = 'openvpn_etc_rw_t'
         }
         'Debian': {
             $package_name = 'openvpn'
@@ -66,6 +70,20 @@ class openvpn::params {
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
         }
+    }
+
+    # In practice only RedHat derivatives have selinux enabled; however, with this construct
+    # we can easily add support for Debian by adding the default_sel* parameters above.
+    if $::os['selinux']['enabled'] {
+        $seluser = $default_seluser
+        $selrole = $default_selrole
+        $seltype = $default_seltype
+        $seltype_rw = $default_seltype_rw
+    } else {
+        $seluser = undef
+        $selrole = undef
+        $seltype = undef
+        $seltype_rw = undef
     }
 
     if str2bool($::has_systemd) {

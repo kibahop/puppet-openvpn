@@ -20,6 +20,8 @@ define openvpn::config::passwordauth
     String $password
 )
 {
+    include ::openvpn::params
+
     # Special case path for Windows
     $passfile = $::kernel ? {
         'windows' => "${::openvpn::params::config_dir}\\${title}.pass",
@@ -33,6 +35,9 @@ define openvpn::config::passwordauth
         owner   => $::os::params::adminuser,
         group   => $::os::params::admingroup,
         mode    => '0600',
+        seluser => $::openvpn::params::seluser,
+        selrole => $::openvpn::params::selrole,
+        seltype => $::openvpn::params::seltype,
         require => Class['openvpn::install'],
         notify  => Class['openvpn::service'],
     }

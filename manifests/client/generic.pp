@@ -24,6 +24,17 @@ define openvpn::client::generic
 {
     include ::openvpn::params
 
+    # Set defaults for selinux
+    File {
+        seluser => $::openvpn::params::seluser,
+        selrole => $::openvpn::params::selrole,
+        seltype => $::openvpn::params::seltype,
+    }
+
+    file { "/etc/openvpn/openvpn-${title}-status.log":
+        seltype => $::openvpn::params::seltype_rw,
+    }
+
     # Shorthand for config file extension
     $ext = $::openvpn::params::config_ext
 
