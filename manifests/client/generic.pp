@@ -31,12 +31,30 @@ define openvpn::client::generic
         seltype => $::openvpn::params::seltype,
     }
 
-    file { "/etc/openvpn/openvpn-${title}-status.log":
-        seltype => $::openvpn::params::seltype_rw,
+    # Manage various operating system differences
+    $ext = $::openvpn::params::config_ext
+
+    if $::facts['kernel'] == 'windows' {
+        $config = "${::openvpn::params::config_dir}\\${title}.${ext}"
+        $status = "${::openvpn::params::config_dir}\\openvpn-${title}-status.log"
+        $l_manage_monit = false
+        $l_manage_packetfilter = false
+    } else {
+        # UNIX-style operating system is assumed
+        $config = "${::openvpn::params::config_dir}/${title}.${ext}"
+        $status = "${::openvpn::params::config_dir}/openvpn-${title}-status.log"
+        $l_manage_monit = $manage_monit
+
+        # Only iptables/ip6tables is supported right now, so *BSD is ruled out
+        $l_manage_packetfilter = $::facts['kernel'] ? {
+            'Linux' => $manage_packetfilter,
+            default => false,
+        }
     }
 
-    # Shorthand for config file extension
-    $ext = $::openvpn::params::config_ext
+    file { $status:
+        seltype => $::openvpn::params::seltype_rw,
+    }
 
     # Configure up and down scripts as necessary
     $up_line = $up_script ? {
@@ -61,12 +79,6 @@ define openvpn::client::generic
             default => "puppet:///files/openvpn-${title}-${clientname}.conf",
         }
         $content = undef
-    }
-
-    # Special case path for Windows
-    $config = $::kernel ? {
-        'windows' => "${::openvpn::params::config_dir}\\${title}.${ext}",
-        default   => "${::openvpn::params::config_dir}/${title}.${ext}"
     }
 
     # On systemd we don't have to play tricks with file extensions; instead we 
@@ -138,13 +150,13 @@ define openvpn::client::generic
         }
     }
 
-    if $manage_monit {
+    if $l_manage_monit {
         openvpn::monit { $title:
             enable_service => $enable_service,
         }
     }
 
-    if $manage_packetfilter {
+    if $l_manage_packetfilter {
         openvpn::packetfilter::common { "openvpn-${title}":
             tunif => $tunif,
         }
