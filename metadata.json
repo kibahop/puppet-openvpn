@@ -2,18 +2,82 @@
   "name": "puppetfinland-openvpn",
   "version": "3.1.1",
   "author": "Puppet-Finland team",
-  "license": "BSD-2-Clause",
   "summary": "Setup openvpn",
-  "source": "https://github.com/Puppet-Finland/openvpn.git",
-  "project_page": "https://github.com/Puppet-Finland/openvpn",
+  "license": "BSD-2-Clause",
+  "source": "https://github.com/Puppet-Finland/puppet-openvpn.git",
+  "project_page": "https://github.com/Puppet-Finland/puppet-openvpn",
   "dependencies": [
-    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
-    { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "duritong/sysctl", "version_requirement": ">= 0.0.6" },
-    { "name": "puppetfinland/os", "version_requirement": ">= 1.0.0" },
-    { "name": "puppetfinland/systemd", "version_requirement": ">= 0.1.2" },
-    { "name": "puppetfinland/puppetagent", "version_requirement": ">= 0.4.0" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0" },
-    { "name": "puppetlabs/apt", "version_requirement": ">= 2.0.0" }
-  ]
+    {
+      "name": "puppetfinland/monit",
+      "version_requirement": ">= 0.5.0"
+    },
+    {
+      "name": "puppetfinland/packetfilter",
+      "version_requirement": ">= 0.5.0"
+    },
+    {
+      "name": "duritong/sysctl",
+      "version_requirement": ">= 0.0.6"
+    },
+    {
+      "name": "puppetfinland/os",
+      "version_requirement": ">= 1.0.0"
+    },
+    {
+      "name": "puppetfinland/systemd",
+      "version_requirement": ">= 0.1.2"
+    },
+    {
+      "name": "puppetfinland/puppetagent",
+      "version_requirement": ">= 0.4.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.0.0"
+    },
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 2.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8",
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "windows"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ],
+  "pdk-version": "1.4.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.4.1-0-g52adbbb"
 }
