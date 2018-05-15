@@ -99,25 +99,3 @@ For more details please refer to the class and define documentation:
 * [Define: openvpn::client::inline](manifests/client/inline.pp)
 * [Define: openvpn::client::ldapauth](manifests/client/ldapauth.pp)
 
-# Dependencies
-
-See [metadata.json](metadata.json).
-
-# Operating system support
-
-This module has been tested on
-
-* Debian 7
-* Debian 8
-* Ubuntu 12.04
-* Ubuntu 14.04
-* Fedora 21
-* CentOS 7
-* Windows 7 (no server or puppet certificate support)
-
-The following operating systems should work out of the box or with small
-modifications:
-
-* FreeBSD
-
-For details see [params.pp](manifests/params.pp).
