@@ -72,31 +72,18 @@ define openvpn::server::ldapauth
 (
     Boolean $manage_packetfilter = true,
     Boolean $manage_monit = true,
-            $tunif='tun5',
-            $local_port = 1194,
-            $url = 'ldap://localhost',
-            $binddn = $::ldap_binddn,
-            $bindpw = $::ldap_bindpw,
-            $user_basedn = $::ldap_user_basedn,
-            $user_search_filter = $::ldap_user_search_filter,
-            $group_basedn = $::ldap_group_basedn,
-            $group_search_filter = $::ldap_group_search_filter,
-            $member_attribute = $::ldap_member_attribute
+    String  $tunif='tun5',
+    Integer $local_port = 1194,
+    String  $url = 'ldap://localhost',
+    String  $binddn = $::ldap_binddn,
+    String  $bindpw = $::ldap_bindpw,
+    String  $user_basedn = $::ldap_user_basedn,
+    String  $user_search_filter = $::ldap_user_search_filter,
+    String  $group_basedn = $::ldap_group_basedn,
+    String  $group_search_filter = $::ldap_group_search_filter,
+    String  $member_attribute = $::ldap_member_attribute
 )
 {
-    # Parameter validation
-    $string_params = [ $tunif, $url, $binddn, $bindpw, $user_basedn, $user_search_filter, $group_basedn, $group_search_filter, $member_attribute ]
-    $string_params.each |$param| {
-        # validate_string does not fail on undef
-        if $param == undef {
-            fail('ERROR: Parameter undefined!')
-        } else {
-            validate_string($param)
-        }
-    }
-
-    validate_integer($local_port)
-
     include ::openvpn::install::ldapplugin
 
     openvpn::config::server::ldapplugin { $title:
