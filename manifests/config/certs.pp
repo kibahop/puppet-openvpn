@@ -16,20 +16,24 @@
 # [*manage_client_certs*]
 #   Manage client's private key and certificate. Valid values are true and 
 #   false.
+#
 define openvpn::config::certs
 (
-    Boolean $manage_dh,
-    Boolean $manage_certs,
-    Boolean $manage_client_certs
+    Boolean          $manage_dh,
+    Boolean          $manage_certs,
+    Boolean          $manage_client_certs,
+    Optional[String] $files_baseurl = undef
 )
 {
-    # Use conveniently short variable names to improve readability
+    $l_files_baseurl = openvpn::baseurl($files_baseurl)
 
     # Special case path for Windows
     $config_dir = $::kernel ? {
         'windows' => "${::openvpn::params::config_dir}\\",
         default   => "${::openvpn::params::config_dir}/"
     }
+
+    # Use conveniently short variable names to improve readability
     $dh = "${title}-dh.pem"
     $ta = "${title}-ta.key"
     $cert = "${title}.crt"
@@ -52,30 +56,30 @@ define openvpn::config::certs
     # Always manage the TLS auth key
     file { "openvpn-${ta}":
         name   => $ta_path,
-        source => "puppet:///files/openvpn-${ta}",
+        source => "${l_files_baseurl}/openvpn-${ta}",
         mode   => '0600',
     }
 
     if $manage_dh {
         file { "openvpn-${dh}":
             name   => $dh_path,
-            source => "puppet:///files/openvpn-${dh}",
+            source => "${l_files_baseurl}/openvpn-${dh}",
         }
     }
 
     if $manage_certs {
         file { "openvpn-${ca}":
             name   => $ca_path,
-            source => "puppet:///files/openvpn-${ca}",
+            source => "${l_files_baseurl}/openvpn-${ca}",
         }
         if $manage_client_certs {
             file { "openvpn-${cert}":
                 name   => $cert_path,
-                source => "puppet:///files/openvpn-${title}-${::fqdn}.crt",
+                source => "${l_files_baseurl}/openvpn-${title}-${::fqdn}.crt",
             }
             file { "openvpn-${key}":
                 name   => $key_path,
-                source => "puppet:///files/openvpn-${title}-${::fqdn}.key",
+                source => "${l_files_baseurl}/openvpn-${title}-${::fqdn}.key",
                 mode   => '0600',
             }
         }

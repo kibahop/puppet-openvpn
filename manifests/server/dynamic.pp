@@ -35,20 +35,24 @@
 #   NAT configuration as a hash:
 #      source: the source network (VPN address pool), for example 10.44.55.0/24
 #      destination: the destination network, for example 192.168.1.0/24
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
 define openvpn::server::dynamic
 (
-    String         $vpn_network,
-    Boolean        $manage_packetfilter = true,
-    Boolean        $manage_monit = true,
-    String         $vpn_netmask = '255.255.255.0',
-    String         $tunif = 'tun5',
-    Integer        $max_clients = 50,
-    Integer        $local_port = 1194,
-    Boolean        $use_puppetcerts = true,
-    Array[String]  $routes = [],
-    Array[String]  $push = [],
-    Optional[Hash] $nat = undef
+    String           $vpn_network,
+    Boolean          $manage_packetfilter = true,
+    Boolean          $manage_monit = true,
+    String           $vpn_netmask = '255.255.255.0',
+    String           $tunif = 'tun5',
+    Integer          $max_clients = 50,
+    Integer          $local_port = 1194,
+    Boolean          $use_puppetcerts = true,
+    Optional[String] $files_baseurl = undef,
+    Array[String]    $routes = [],
+    Array[String]    $push = [],
+    Optional[Hash]   $nat = undef
 )
 {
     include ::openvpn::params
@@ -57,6 +61,7 @@ define openvpn::server::dynamic
         manage_packetfilter => $manage_packetfilter,
         manage_monit        => $manage_monit,
         dynamic             => true,
+        files_baseurl       => $files_baseurl,
         vpn_network         => $vpn_network,
         vpn_netmask         => $vpn_netmask,
         tunif               => $tunif,

@@ -11,6 +11,7 @@ define openvpn::client::generic
     Boolean           $manage_packetfilter,
     Boolean           $manage_monit,
     Boolean           $dynamic,
+    Optional[String]  $files_baseurl = undef,
     Boolean           $enable_service = true,
     String            $tunif='tun10',
     Optional[String]  $remote_ip = undef,
@@ -23,6 +24,8 @@ define openvpn::client::generic
 )
 {
     include ::openvpn::params
+
+    $l_files_baseurl = openvpn::baseurl($files_baseurl)
 
     # Set defaults for selinux
     File {
@@ -75,8 +78,8 @@ define openvpn::client::generic
         # Allow reusing generic configuration files, or certificates meant for 
         # other nodes.
         $source = $clientname ? {
-            undef   => "puppet:///files/openvpn-${title}-${::fqdn}.conf",
-            default => "puppet:///files/openvpn-${title}-${clientname}.conf",
+            undef   => "${l_files_baseurl}/openvpn-${title}-${::fqdn}.conf",
+            default => "${l_files_baseurl}/openvpn-${title}-${clientname}.conf",
         }
         $content = undef
     }

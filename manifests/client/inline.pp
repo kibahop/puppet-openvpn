@@ -39,32 +39,17 @@
 #   several different nodes. For example, if you created a file called 
 #   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the 
 #   $clientname. No default value.
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
-# == Examples
-#
-# Hiera example:
-#
-#   ---
-#  classes:
-#      - openvpn
-#
-#  openvpn::inline_clients:
-#      home:
-#          enable_service: false
-#          tunif: 'tun12'
-#      company1:
-#          enable_service: false
-#          tunif: 'tun13'
-#          # Reuse some other client's certificate; this requires duplicate-cn 
-#          # on the OpenVPN server.
-#          clientname: 'laptop.domain.com'
-#  
 define openvpn::client::inline
 (
     Boolean          $manage_packetfilter = true,
     Boolean          $manage_monit = true,
     Boolean          $enable_service = true,
     String           $tunif = 'tun10',
+    Optional[String] $files_baseurl = undef,
     Optional[String] $clientname = undef
 )
 {
@@ -75,6 +60,7 @@ define openvpn::client::inline
         manage_packetfilter => true,
         manage_monit        => true,
         dynamic             => false,
+        files_baseurl       => $files_baseurl,
         enable_service      => $enable_service,
         tunif               => $tunif,
         clientname          => $clientname,

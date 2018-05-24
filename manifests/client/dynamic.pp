@@ -3,22 +3,6 @@
 #
 # Setup an OpenVPN client based on a configuration file template.
 #
-# This define can reuse Puppet certificates and keys, or use ones created with 
-# another CA such as Easy-RSA 3. If you use an external CA, you need to place 
-# the CA cert as well as the client's certificate and key to the Puppet 
-# fileserver:
-#
-#     "puppet:///files/openvpn-${title}-${::fqdn}.key"
-#     "puppet:///files/openvpn-${title}-${::fqdn}.crt"
-#     "puppet:///files/openvpn-${title}-ca.crt"
-#
-# Even if you decide to reuse Puppet certificates and keys, you need to have the 
-# TLS auth key in
-#
-#     "puppet:///files/openvpn-${title}-ta.key"
-#
-# See ::openvpn::server::dynamic for details on how to create that file.
-#
 # == Parameters
 #
 # [*manage_packetfilter*]
@@ -51,6 +35,9 @@
 #   if one is provided by the operating system.
 # [*down_script*]
 #   Same as $up_script, but run after TUN/TAP device close instead.
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
 define openvpn::client::dynamic
 (
@@ -61,6 +48,7 @@ define openvpn::client::dynamic
     String           $tunif = 'tun5',
     Boolean          $use_puppetcerts = true,
     Boolean          $enable_service = true,
+    Optional[String] $files_baseurl = undef,
     Optional[String] $username = undef,
     Optional[String] $password = undef,
     Optional[String] $up_script = $::openvpn::params::up_script,
@@ -73,6 +61,7 @@ define openvpn::client::dynamic
         manage_packetfilter => true,
         manage_monit        => true,
         dynamic             => true,
+        files_baseurl       => $files_baseurl,
         remote_ip           => $remote_ip,
         remote_port         => $remote_port,
         enable_service      => $enable_service,
@@ -108,6 +97,7 @@ define openvpn::client::dynamic
             manage_dh           => false,
             manage_certs        => true,
             manage_client_certs => $manage_client_certs,
+            files_baseurl       => $files_baseurl,
         }
     }
 }

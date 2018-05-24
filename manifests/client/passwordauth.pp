@@ -49,21 +49,9 @@
 #   several different nodes. For example, if you created a file called
 #   "openvpn-myserver-allclients.conf", then you'd use "allclients" as the
 #   $clientname. No default value.
-#
-# == Examples
-#
-# Hiera example:
-#
-#   ---
-#   classes:
-#       - openvpn
-#
-#   openvpn::passwordauth_clients:
-#       company2:
-#           enable_service: false
-#           tunif: 'tun14'
-#           username: 'john'
-#           password: 'mypassword'
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
 define openvpn::client::passwordauth
 (
@@ -71,6 +59,7 @@ define openvpn::client::passwordauth
     Boolean          $manage_monit = true,
     Boolean          $enable_service = true,
     String           $tunif = 'tun10',
+    Optional[String] $files_baseurl = undef,
     Optional[String] $username = undef,
     Optional[String] $password = undef,
     Optional[String] $clientname = undef
@@ -80,6 +69,7 @@ define openvpn::client::passwordauth
         manage_packetfilter => true,
         manage_monit        => true,
         dynamic             => false,
+        files_baseurl       => $files_baseurl,
         enable_service      => $enable_service,
         tunif               => $tunif,
         clientname          => $clientname,

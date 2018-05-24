@@ -26,14 +26,18 @@
 #   NAT configuration as a hash:
 #      source: the source network (VPN address pool), for example 10.44.55.0/24
 #      destination: the destination network, for example 192.168.1.0/24
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
 define openvpn::server::inline
 (
-    Boolean $manage_packetfilter = true,
-    Boolean $manage_monit = true,
-            $tunif='tun5',
-            $local_port = 1194,
-            $nat=undef,
+    Boolean          $manage_packetfilter = true,
+    Boolean          $manage_monit = true,
+    Optional[String] $tunif='tun5',
+    Integer          $local_port = 1194,
+    Optional[Hash]   $nat=undef,
+    Optional[String] $files_baseurl = undef
 )
 {
     include ::openvpn::params
@@ -42,6 +46,7 @@ define openvpn::server::inline
         manage_packetfilter => $manage_packetfilter,
         manage_monit        => $manage_monit,
         dynamic             => false,
+        files_baseurl       => $files_baseurl,
         tunif               => $tunif,
         local_port          => $local_port,
         nat                 => $nat

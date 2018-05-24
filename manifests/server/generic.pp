@@ -20,6 +20,7 @@ define openvpn::server::generic
     Boolean                 $manage_packetfilter,
     Boolean                 $manage_monit,
     Boolean                 $dynamic,
+    Optional[String]        $files_baseurl = undef,
     String                  $tunif = 'tun5',
     Optional[String]        $vpn_network = undef,
     Optional[String]        $vpn_netmask = undef,
@@ -31,6 +32,8 @@ define openvpn::server::generic
 )
 {
     include ::openvpn::params
+
+    $l_files_baseurl = openvpn::baseurl($files_baseurl)
 
     # IP forwarding is needed if we want to access servers behind the VPN server
     # from VPN clients. For details, see
@@ -67,7 +70,7 @@ define openvpn::server::generic
         $source = undef
         $content = template('openvpn/openvpn-server.conf.erb')
     } else {
-        $source = "puppet:///files/openvpn-${title}-${::fqdn}.conf"
+        $source = "${l_files_baseurl}/openvpn-${title}-${::fqdn}.conf"
         $content = undef
     }
     $config = "${::openvpn::params::config_dir}/${title}.conf"

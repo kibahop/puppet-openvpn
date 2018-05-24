@@ -55,6 +55,9 @@
 #   The member attribute in the group object. This is used to determine if the 
 #   user belongs to the group that's allowed VPN access. For example 'member'. 
 #   Defaults to top-scope variable $::ldap_member_attribute.
+# [*files_baseurl*]
+#   Base URL for static OpenVPN config files and keys. Defaults to
+#   'puppet:///files'.
 #
 # == Examples
 #
@@ -70,18 +73,19 @@
 #
 define openvpn::server::ldapauth
 (
-    Boolean $manage_packetfilter = true,
-    Boolean $manage_monit = true,
-    String  $tunif='tun5',
-    Integer $local_port = 1194,
-    String  $url = 'ldap://localhost',
-    String  $binddn = $::ldap_binddn,
-    String  $bindpw = $::ldap_bindpw,
-    String  $user_basedn = $::ldap_user_basedn,
-    String  $user_search_filter = $::ldap_user_search_filter,
-    String  $group_basedn = $::ldap_group_basedn,
-    String  $group_search_filter = $::ldap_group_search_filter,
-    String  $member_attribute = $::ldap_member_attribute
+    Boolean          $manage_packetfilter = true,
+    Boolean          $manage_monit = true,
+    String           $tunif='tun5',
+    Integer          $local_port = 1194,
+    String           $url = 'ldap://localhost',
+    String           $binddn = $::ldap_binddn,
+    String           $bindpw = $::ldap_bindpw,
+    String           $user_basedn = $::ldap_user_basedn,
+    String           $user_search_filter = $::ldap_user_search_filter,
+    String           $group_basedn = $::ldap_group_basedn,
+    String           $group_search_filter = $::ldap_group_search_filter,
+    String           $member_attribute = $::ldap_member_attribute,
+    Optional[String] $files_baseurl = undef
 )
 {
     include ::openvpn::install::ldapplugin
@@ -100,6 +104,7 @@ define openvpn::server::ldapauth
     openvpn::server::inline { $title:
         manage_packetfilter => $manage_packetfilter,
         manage_monit        => $manage_monit,
+        files_baseurl       => $files_baseurl,
         tunif               => $tunif,
         local_port          => $local_port,
     }

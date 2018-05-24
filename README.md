@@ -63,7 +63,8 @@ $enable_service set to true. In the example right above the "office" connection
 is started automatically on boot, but the "vpn_provider" connection is not.
 
 If you use an external CA, you need to place the CA cert as well as the
-client/server certificate and key to the Puppet fileserver:
+client/server certificate and key to the Puppet fileserver. By default the 
+module looks for the certificates in these locations:
 
     "puppet:///files/openvpn-${title}-${::fqdn}.key"
     "puppet:///files/openvpn-${title}-${::fqdn}.crt"
@@ -75,6 +76,10 @@ fileserver:
 
     "puppet:///files/openvpn-${title}-ta.key" (TLS auth key)
     "puppet:///files/openvpn-${title}-dh.pem" (Diffie-Helmann parameters)
+
+You can override the "puppet:///files" part using the $files_baseurl parameter, 
+for example if you want to store the files in a module or on a different global 
+fileshare.
 
 To create the TLS auth key do
 
