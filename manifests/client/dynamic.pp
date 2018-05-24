@@ -3,21 +3,22 @@
 #
 # Setup an OpenVPN client based on a configuration file template.
 #
-# This define can reuse Puppet certificates and keys, or use ones created with 
-# another CA such as Easy-RSA 3. If you use an external CA, you need to place 
-# the CA cert as well as the client's certificate and key to the Puppet 
-# fileserver:
+# This define can reuse Puppet certificates and keys, or use ones created with
+# another CA such as Easy-RSA 3. If you use an external CA, you need to place
+# the CA cert as well as the client's certificate and key to the Puppet
+# fileserver. By default this module looks for the following files:
 #
 #     "puppet:///files/openvpn-${title}-${::fqdn}.key"
 #     "puppet:///files/openvpn-${title}-${::fqdn}.crt"
 #     "puppet:///files/openvpn-${title}-ca.crt"
-#
-# Even if you decide to reuse Puppet certificates and keys, you need to have the 
-# TLS auth key in
-#
 #     "puppet:///files/openvpn-${title}-ta.key"
 #
-# See ::openvpn::server::dynamic for details on how to create that file.
+# You can override the base URL ("puppet:///files" above) using the 
+# $files_baseurl parameter.
+#
+# Even if you decide to reuse Puppet certificates and keys, you need to have the 
+# TLS auth key on the fileserver. See ::openvpn::server::dynamic for details on 
+# how to create that file.
 #
 # == Parameters
 #
@@ -60,6 +61,7 @@ define openvpn::client::dynamic
     Integer          $remote_port = 1194,
     String           $tunif = 'tun5',
     Boolean          $use_puppetcerts = true,
+    Optional[String] $files_baseurl = undef,
     Boolean          $enable_service = true,
     Optional[String] $username = undef,
     Optional[String] $password = undef,
@@ -108,6 +110,7 @@ define openvpn::client::dynamic
             manage_dh           => false,
             manage_certs        => true,
             manage_client_certs => $manage_client_certs,
+            files_baseurl        => $files_baseurl,
         }
     }
 }
