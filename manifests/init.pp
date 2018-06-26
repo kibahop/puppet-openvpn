@@ -20,6 +20,10 @@
 #   Enable OpenVPN service on boot. Valid values are true (default) and false. 
 #   This only affects non-systemd distros which may or may not have built-in 
 #   fine-grained control over which VPN connections to start.
+# [*ensure_service*]
+#   State of the system service. Valid values are 'running' and undef (default).
+#   This does not have any effect on systemd distros where each OpenVPN config
+#   is a separate system service.
 # [*inline_clients*]
 #   A hash of openvpn::client::inline resources to realize.
 # [*passwordauth_clients*]
@@ -50,6 +54,7 @@ class openvpn
     Boolean $use_latest_release = false,
             $repository = undef,
             $enable_service = true,
+            $ensure_service = undef,
     Hash    $inline_clients = {},
     Hash    $passwordauth_clients = {},
     Hash    $dynamic_clients = {},
@@ -83,6 +88,7 @@ class openvpn
     }
 
     class { '::openvpn::service':
+        ensure => $ensure_service,
         enable => $enable_service,
     }
 
