@@ -6,7 +6,8 @@
 #
 class openvpn::service
 (
-    Boolean $enable
+    Boolean                   $enable,
+    Optional[Enum['running']] $ensure = undef
 
 ) inherits openvpn::params {
 
@@ -17,11 +18,14 @@ class openvpn::service
     #
     if str2bool($::has_systemd) {
         $service_enable = false
+        $service_ensure = undef
     } else {
         $service_enable = $enable
+        $service_ensure = $ensure
     }
 
     service { 'openvpn':
+        ensure  => $service_ensure,
         name    => $::openvpn::params::service_name,
         enable  => $service_enable,
         require => Class['openvpn::install'],
