@@ -1,6 +1,6 @@
 {
   "name": "puppetfinland-openvpn",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "author": "Puppet-Finland team",
   "summary": "Setup openvpn",
   "license": "BSD-2-Clause",
