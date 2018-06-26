@@ -60,7 +60,7 @@ class openvpn::params {
         'windows': {
             $package_name = 'openvpn'
             $package_require = Class['chocolatey']
-            $package_install_options = ['/SELECT_EASYRSA=0']
+            $package_install_options = undef
             $config_dir = 'C:\Program Files\OpenVPN\config'
             # This ridiculous-looking escaping is needed by openvpn-client.conf.erb
             $config_dir_esc = 'C:\\\\Program Files\\\\OpenVPN\\\\config'
