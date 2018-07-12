@@ -1,0 +1,6 @@
+### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
+
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/openvpn --cd /etc/openvpn/ --writepid /var/run/openvpn/%i.pid --config %i.conf
+

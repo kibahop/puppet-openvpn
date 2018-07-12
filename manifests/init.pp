@@ -82,9 +82,12 @@ class openvpn
 
     include ::openvpn::install
 
-    # Debian 8.x requires some tweaks.
+    # Debian 8.x and CentOS 7 do not create pidfiles by default -> fix
     if $::lsbdistcodename == 'jessie' {
-        include ::openvpn::config::jessie
+        ::openvpn::config::systemd { 'jessie': }
+    }
+    if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '7') {
+        include ::openvpn::config::centos7
     }
 
     class { '::openvpn::service':
