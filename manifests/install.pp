@@ -9,7 +9,7 @@ class openvpn::install inherits openvpn::params {
         ensure          => installed,
         name            => $::openvpn::params::package_name,
         require         => [ Class['openvpn::softwarerepo'],
-                            $::openvpn::params::package_require ],
+                           $::openvpn::params::package_require ],
         provider        => $::os::params::package_provider,
         install_options => $::openvpn::params::package_install_options,
     }

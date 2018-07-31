@@ -67,6 +67,11 @@ class openvpn::params {
             $config_ext = 'ovpn'
             $service_name = 'openvpnservice'
         }
+        'Darwin': {
+            $package_name = 'openvpn'
+            $package_provider = 'brew'
+            $homebrew_user = undef
+        }
         default: {
             fail("Unsupported operating system: ${::osfamily}/${::operatingsystem}")
         }

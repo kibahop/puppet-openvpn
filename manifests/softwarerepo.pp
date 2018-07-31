@@ -34,5 +34,10 @@ class openvpn::softwarerepo
         }
     } elsif $::kernel == 'windows' {
         include ::chocolatey
+    } elsif $::kernel == 'Darwin' {
+
+        class { '::homebrew':
+          user  => $homebrew_user,
     }
+  }
 }
